@@ -35,20 +35,14 @@ public:
     int maximalRectangle(vector<vector<char>>& matrix) {
         int n1=matrix.size();
         int n2=matrix[0].size();
-        vector<vector<int>> prefix(n1,vector<int>(n2));
-        for(int j=0;j<matrix[0].size();j++){
-            if(matrix[0][j]=='1')prefix[0][j]=1;
-            else prefix[0][j]=0;
-        }
-        for(int i=1; i<matrix.size();i++){
-            for(int j=0; j<matrix[0].size(); j++){
-                if(matrix[i][j]=='0')prefix[i][j]=0;
-                else prefix[i][j] = prefix[i-1][j]+1;
-            }
-        }
+        vector<int> prefix(n2,0);
         int ans=0;
         for(int i=0; i<matrix.size();i++){
-            ans=max(ans,largestRectangleArea(prefix[i]));
+            for(int j=0; j<matrix[0].size(); j++){
+                if(matrix[i][j]=='0')prefix[j]=0;
+                else prefix[j]++;
+            }
+            ans=max(ans,largestRectangleArea(prefix));
         }
         return ans;
     }
