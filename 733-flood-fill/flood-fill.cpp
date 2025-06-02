@@ -37,6 +37,7 @@ public:
 
     }
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        vector<vector<int>> imgCopy=image;
         int n=image.size();
         int m=image[0].size();
         vector<vector<int>> visited(n,(vector<int>(m,0)));
@@ -45,8 +46,8 @@ public:
             queue<pair<int,int>> q;
             q.push({sr,sc});
             visited[sr][sc]=1;
-            bfs(n,m,q,image,color,iniC,visited);
+            bfs(n,m,q,imgCopy,color,iniC,visited);
         }
-        return image;
+        return imgCopy;
     }
 };
