@@ -1,30 +1,58 @@
 class Solution {
 public:
+    void bfs(int n, int m,queue<tuple<int,int,int>>& q, vector<vector<int>>& visited, vector<vector<int>>& mat, vector<vector<int>>& dist){
+        while(!q.empty()){
+            int i=get<0>(q.front());
+            int j=get<1>(q.front());
+            int d=get<2>(q.front());
+            q.pop();
+
+            int n1,n2;
+            //left
+            n1=i,n2=j-1;
+            if(n1>=0 && n1<n && n2>=0 && n2<m && visited[n1][n2]==0){
+                visited[n1][n2]=1;
+                dist[n1][n2]=d+1;
+                q.push({n1,n2,d+1});
+            }
+            //right
+            n1=i,n2=j+1;
+            if(n1>=0 && n1<n && n2>=0 && n2<m && visited[n1][n2]==0){
+                visited[n1][n2]=1;
+                dist[n1][n2]=d+1;
+                q.push({n1,n2,d+1});
+            }
+            //up
+            n1=i-1,n2=j;
+            if(n1>=0 && n1<n && n2>=0 && n2<m && visited[n1][n2]==0){
+                visited[n1][n2]=1;
+                dist[n1][n2]=d+1;
+                q.push({n1,n2,d+1});
+            }
+            //down
+            n1=i+1,n2=j;
+            if(n1>=0 && n1<n && n2>=0 && n2<m && visited[n1][n2]==0){
+                visited[n1][n2]=1;
+                dist[n1][n2]=d+1;
+                q.push({n1,n2,d+1});
+            }
+        }
+    }
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
         int n=mat.size();
         int m=mat[0].size();
+        vector<vector<int>> vis(n,vector<int>(m,0));
+        vector<vector<int>> dist(n,vector<int>(m));
+        queue<tuple<int,int,int>> q;
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(mat[i][j]==0)continue;
-                int top=m+n,left=m+n;
-
-                if(j-1>=0)left=mat[i][j-1];
-                if(i-1>=0)top=mat[i-1][j];
-
-                mat[i][j]= min(left,top)+1;
+                if(!vis[i][j]&& mat[i][j]==0){
+                    vis[i][j]=1;
+                    q.push({i,j,0});
+                }
             }
         }
-        for(int i=n-1;i>=0;i--){
-            for(int j=m-1;j>=0;j--){
-                if(mat[i][j]==0)continue;
-                int bot=m+n,right=m+n;
-
-                if(j+1<m)right=mat[i][j+1];
-                if(i+1<n)bot=mat[i+1][j];
-
-                mat[i][j]= min(mat[i][j], min(right,bot)+1);
-            }
-        }
-        return mat;
+        bfs(n,m,q,vis,mat,dist);
+        return dist;
     }
 };
