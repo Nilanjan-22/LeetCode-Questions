@@ -8,10 +8,7 @@ public:
         vis[i]=0;
         pathVis[i]=1;
         for(auto it:graph[i]){
-            if(vis[it]==1){
-                vis[i]=1;
-            }
-            if(pathVis[it]==1){
+            if(pathVis[it]==1||vis[it]==1){
                 vis[i]=1;
             }
             else if(vis[it]==-1){
