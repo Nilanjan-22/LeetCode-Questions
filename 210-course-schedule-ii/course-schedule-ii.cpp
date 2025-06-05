@@ -7,7 +7,7 @@ public:
             if(vis[it]==0){
                 if(dfs(it,st,vis,pathVis,adj))return true;
             }
-            else if(pathVis[it]==1&&vis[it]==1)return true;
+            else if(pathVis[it]==1)return true;
         }
         st.push(i);
         pathVis[i]=0;
