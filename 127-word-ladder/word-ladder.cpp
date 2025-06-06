@@ -1,36 +1,44 @@
 class Solution {
 public:
-    int bfs(queue<pair<string,int>>& q, string& end, set<string>& st){
-        int ans=1;
+    int ladderLength(string bw, string ew, vector<string>& wl) {
+        //here bw is my src node
+        // we will simply apply bfs in every direction
+        // but before that instead of a visited vector we will use a set
+        //the set will store the strings
+
+        set<string> st;
+        st.insert(bw);
+        int n=wl.size();
+        for(int i=0;i<n;i++){
+            st.insert(wl[i]);
+        }
+
+        //now we will declare the queue which will store pairs
+        //one of which is the string and the other is the number of paths taken to reach that string
+
+        queue<pair<string,int>> q;
+        //we will push the src string
+        q.push({bw,1});
+        st.erase(bw);
         while(!q.empty()){
-            string word=q.front().first;
-            int s=q.front().second;
-            ans=max(ans,s);
-            if(word==end)return ans;
+            string s=q.front().first;
+            int d=q.front().second;
             q.pop();
-            for(int i=0;i<word.size();i++){
-                string copy=word;
-                for(char j='a';j<='z';j++){
-                    copy[i]=j;
+            //we have to go to every possibility and check if it exists in the set
+            //if it does push it in the queue
+            for(int i=0;i<s.size();i++){
+                string copy=s;
+                for(char it ='a';it<='z';it++){
+                    copy[i]=it;
                     if(st.find(copy)!=st.end()){
-                        q.push({copy,s+1});
+                        if(copy==ew)return d+1;
+                        q.push({copy,d+1});
                         st.erase(copy);
                     }
                 }
             }
+
         }
         return 0;
-    }
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        int n=wordList.size();
-        set<string> st;
-        st.insert(beginWord);
-        for(int i=0;i<n;i++){
-            st.insert(wordList[i]);
-        }
-        queue<pair<string,int>> q;
-        q.push({beginWord,1});
-        st.erase(beginWord);
-        return bfs(q,endWord,st);
     }
 };
