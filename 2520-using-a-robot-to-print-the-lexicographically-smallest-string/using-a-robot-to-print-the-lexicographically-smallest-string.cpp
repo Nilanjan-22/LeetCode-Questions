@@ -2,18 +2,17 @@ class Solution {
 public:
     string robotWithString(string s) {
         int n=s.size();
-        unordered_map<char,int> mp;
+        vector<int> mp(26,0);
         string p="",t="";
         for(int i=0;i<n;i++){
-            if(mp.find(s[i])==mp.end())mp[s[i]]=1;
-            else mp[s[i]]++;
+            mp[s[i]-97]++;
         }
 
         for(int i=0;i<n;){
             char ch=s[i];
-            for(char it='a';it<s[i];it++){
+            for(char it=0;it<s[i]-97;it++){
                 if(mp[it]>0){
-                    ch=it;
+                    ch=(char)(it+97);
                     break;
                 }
             }
@@ -23,10 +22,10 @@ public:
                 t.pop_back();
                 j--;
             }
-            while(mp[ch]>0 && i<n){
+            while(mp[ch-97]>0 && i<n){
                 if(s[i]!=ch)t.push_back(s[i]);
                 else p.push_back(s[i]);
-                mp[s[i]]--;
+                mp[s[i]-97]--;
                 i++;
             }
         }
