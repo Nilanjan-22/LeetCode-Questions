@@ -30,7 +30,7 @@ public:
                 string copy=s;
                 for(char it ='a';it<='z';it++){
                     copy[i]=it;
-                    if(st.find(copy)!=st.end()){
+                    if(st.count(copy)>0){
                         if(copy==ew)return d+1;
                         q.push({copy,d+1});
                         st.erase(copy);
