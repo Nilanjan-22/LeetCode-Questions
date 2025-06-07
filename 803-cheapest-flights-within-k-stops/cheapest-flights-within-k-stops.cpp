@@ -20,7 +20,6 @@ public:
             int s=pq.front()[2];
 
             pq.pop();
-            if(s>k)continue;
             for(auto it: adj[node]){
                 int v=it.first;
                 int c=it.second;
