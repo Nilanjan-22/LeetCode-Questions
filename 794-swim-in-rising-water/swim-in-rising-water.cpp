@@ -30,7 +30,7 @@ public:
             else{
                 low=mid+1;
             }
-            // vis.clear();
+            vis.clear();
         }
         return ans;
     }
