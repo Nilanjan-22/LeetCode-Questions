@@ -11,28 +11,35 @@
  */
 class Solution {
 public:
-    //iterative approach with 2 stacks
+    //iterative approach using 1 stack (kinda Hard)
     vector<int> postorderTraversal(TreeNode* root) {
+        TreeNode* cur=root;
         vector<int> ans;
-        stack<TreeNode*> st1;
-        stack<TreeNode*> st2;
-        if(root==NULL)return ans;
-        st1.push(root);
-        while(!st1.empty()){
-            TreeNode* node=st1.top();
-            st1.pop();
-            if(node->left!=NULL){
-                st1.push(node->left);
-            }
-            if(node->right!=NULL){
-                st1.push(node->right);
-            }
-            st2.push(node);
-        }
+        if(root==NULL) return ans;
 
-        while(!st2.empty()){
-            ans.push_back(st2.top()->val);
-            st2.pop();
+        stack<TreeNode*> st;
+
+        while(cur!=NULL || !st.empty()){
+            if(cur!=NULL){
+                st.push(cur);
+                cur=cur->left;
+            }
+            else{
+                TreeNode* temp=st.top()->right;
+                if(temp!=NULL){
+                    cur=temp;
+                }
+                else{
+                    temp=st.top();
+                    ans.push_back(temp->val);
+                    st.pop();
+                    while(!st.empty() && temp==st.top()->right){
+                        temp=st.top();
+                        ans.push_back(temp->val);
+                        st.pop();
+                    }
+                }
+            }
         }
         return ans;
     }
