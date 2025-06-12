@@ -11,36 +11,40 @@
  */
 class Solution {
 public:
-    //iterative approach using 1 stack (kinda Hard)
+    //iterative approach of doing all i.e preorder,postorder and inorder in one go
     vector<int> postorderTraversal(TreeNode* root) {
-        TreeNode* cur=root;
-        vector<int> ans;
-        if(root==NULL) return ans;
+        vector<int> pre,in,post;
+        stack<pair<TreeNode*,int>> st;
+        if(root==NULL)return post;
+        st.push({root,1});
+        while(!st.empty()){
+            int num=st.top().second;
+            TreeNode* node=st.top().first;
 
-        stack<TreeNode*> st;
-
-        while(cur!=NULL || !st.empty()){
-            if(cur!=NULL){
-                st.push(cur);
-                cur=cur->left;
+            if(num==1){
+                pre.push_back(node->val);
+                st.pop();
+                st.push({node,2});
+                if(node->left!=NULL){
+                    st.push({node->left,1});
+                }
             }
+
+            else if(num==2){
+                in.push_back(node->val);
+                st.pop();
+                st.push({node,3});
+                if(node->right!=NULL){
+                    st.push({node->right,1});
+                }
+            }
+
             else{
-                TreeNode* temp=st.top()->right;
-                if(temp!=NULL){
-                    cur=temp;
-                }
-                else{
-                    temp=st.top();
-                    ans.push_back(temp->val);
-                    st.pop();
-                    while(!st.empty() && temp==st.top()->right){
-                        temp=st.top();
-                        ans.push_back(temp->val);
-                        st.pop();
-                    }
-                }
+                post.push_back(node->val);
+                st.pop();
             }
         }
-        return ans;
+
+        return post;
     }
 };
