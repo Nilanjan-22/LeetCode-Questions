@@ -15,7 +15,6 @@ public:
             if(dig[i]>0 && chng==-1)chng=dig[i];
             if(dig[i]==chng)dig[i]=0;
         }
-        for(int i=0;i<dig.size();i++)cout<<dig[i]<<" ";
         chng=-1;
         for(int i=0;i<n;i++){
             if(digits[i]<9 && chng==-1)chng=digits[i];
