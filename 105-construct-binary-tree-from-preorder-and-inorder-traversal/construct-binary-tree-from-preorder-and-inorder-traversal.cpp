@@ -21,7 +21,7 @@ public:
         int ls=posi-ios;
 
         root->left = bt(po,pos+1,pos+ls,io,ios,posi-1,hash);
-        root->right = bt(po,pos+ls+1,poe, io,posi+1,poe,hash);
+        root->right = bt(po,pos+ls+1,poe, io,posi+1,ioe,hash);
 
         return root;
     }
