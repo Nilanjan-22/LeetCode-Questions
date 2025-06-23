@@ -23,24 +23,10 @@ public:
                 }
             }
             else if(ways>numWays[i] || numWays[i]-ways>1){
-                // for(int i=0;i<n;i++){
-                //     for(int j=1;j<n+1;j++){
-                //          cout<<dp[i][j]<<" ";
-                //     }
-                // cout<<endl;
-                // }
                 return {};
             }
-            // else {
-            //     for(int j=deno.size(); j<n;j++)dp[j][i+1]=0;
-            // }
+
         }
-        // for(int i=0;i<n;i++){
-        //     for(int j=1;j<n+1;j++){
-        //         cout<<dp[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
         return deno;
     }
 };
