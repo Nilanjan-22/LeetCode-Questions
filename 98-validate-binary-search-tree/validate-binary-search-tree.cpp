@@ -19,7 +19,7 @@ public:
 
         while(cur){
             if(cur->left==NULL){
-                if((long long)prev_val>=(long long)cur->val)ans=false;
+                if(prev_val>=cur->val)ans=false;
                 prev_val=cur->val;
 
                 cur=cur->right;
