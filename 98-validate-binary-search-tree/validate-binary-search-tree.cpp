@@ -14,7 +14,7 @@ public:
     bool isValidBST(TreeNode* root) {
         bool ans=true;
 
-        long long prev_val=-2147483649;
+        long long prev_val=LLONG_MIN;
         TreeNode* cur=root;
 
         while(cur){
