@@ -1,7 +1,7 @@
 class Solution {
 public:
     vector<string> partitionString(string s) {
-        set<string> st;
+        unordered_set<string> st;
         string seg="";
         vector<string> ans;
         int n=s.size();
