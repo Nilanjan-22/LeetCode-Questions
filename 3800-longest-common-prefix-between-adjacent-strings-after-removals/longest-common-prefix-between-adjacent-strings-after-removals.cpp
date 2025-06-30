@@ -42,12 +42,7 @@ public:
         max_index=build(max_l);
 
         vector<int> ans(n);
-        // for(int i=0;i<n;i++){
-        //     cout<<max_l[i].first<<max_l[i].second<<" ";
-        // }
-        // for(int i=0;i<n;i++){
-        //     cout<<max_index[i]<<" ";
-        // }
+
         for(int i=0;i<n;i++){
             if(i==0){
                 if(max_index[0]==0){
