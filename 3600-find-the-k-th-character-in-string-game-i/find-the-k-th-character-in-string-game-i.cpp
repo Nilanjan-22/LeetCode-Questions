@@ -1,20 +1,14 @@
 class Solution {
 public:
     char kthCharacter(int k) {
-        int l=0;
-        while(k>>l)l++;
-
-        string s="a";
-        int ini=1;
-
-        for(int i=0;i<l;i++){
-            s+=s;
-            for(int i=ini;i<s.size();i++){
-                s[i]++;
-            }
-            ini=s.size();
+        
+        int cnt=0;
+        while(k>1){
+            int l= __lg(k);
+            if(pow(2,l)==k)l--;
+            k-=pow(2,l);
+            cnt++;
         }
-        cout<<s<<endl;
-        return s[k-1];
+        return (char)97+cnt;
     }
 };
