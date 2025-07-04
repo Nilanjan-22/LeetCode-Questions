@@ -3,15 +3,13 @@ public:
     bool pos(string& s, string& p, vector<int>& removable, int k){
         if(k==0)return true;
 
-        set<int> v;
+        string c=s;
         for(int i=0;i<k;i++){
-            v.insert(removable[i]);
+            c[removable[i]]='*';
         }
-
         int i=0,j=0;
-        while(i<s.size() && j<p.size()){
-            if(v.find(i)!=v.end())i++;
-            else if(s[i]==p[j]){
+        while(i<c.size() && j<p.size()){
+            if(c[i]==p[j]){
                 i++;
                 j++;
             }
