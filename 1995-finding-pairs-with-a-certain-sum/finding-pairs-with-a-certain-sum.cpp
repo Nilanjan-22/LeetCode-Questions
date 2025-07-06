@@ -21,7 +21,6 @@ public:
         int ans=0;
         for(auto it: mp1){
             int dif=tot-it.first;
-            // if(it.first>=tot)break;
             if(mp2.find(dif)!=mp2.end())ans+=it.second*mp2[dif];
         }
         return ans;
