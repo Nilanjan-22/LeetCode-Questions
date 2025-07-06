@@ -1,7 +1,7 @@
 class FindSumPairs {
 public:
-    map<int,int> mp1;
-    map<int,int> mp2;
+    unordered_map<int,int> mp1;
+    unordered_map<int,int> mp2;
     vector<int> nums2c;
     FindSumPairs(vector<int>& nums1, vector<int>& nums2) {
         for(int i=0;i<nums1.size();i++)mp1[nums1[i]]++;
@@ -21,8 +21,8 @@ public:
         int ans=0;
         for(auto it: mp1){
             int dif=tot-it.first;
-            if(it.first>=tot)break;
-            else if(mp2.find(dif)!=mp2.end())ans+=it.second*mp2[dif];
+            // if(it.first>=tot)break;
+            if(mp2.find(dif)!=mp2.end())ans+=it.second*mp2[dif];
         }
         return ans;
     }
