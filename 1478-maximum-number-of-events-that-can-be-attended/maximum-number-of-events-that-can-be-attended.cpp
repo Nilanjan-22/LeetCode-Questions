@@ -1,26 +1,33 @@
 class Solution {
 public:
     int maxEvents(vector<vector<int>>& events) {
-        sort(events.begin(),events.end());
         int n=events.size();
-        priority_queue<int,vector<int>,greater<int>> mini;
-        int max_day=0, e=0;
-        for(int i=0;i<n;i++)max_day=max(max_day,events[i][1]);
-        int day=1;
-        int ans=0;
-        while(day<=max_day){
+        // first sort according to the starting date
+        sort(events.begin(),events.end()); 
+        //so that i can know which event starts at which day
 
-            while(e<n && events[e][0]==day){
-                mini.push(events[e][1]);
-                e++;
+        //find the final day to event all events
+        int fday=0;
+        for(int i=0;i<n;i++)fday=max(fday,events[i][1]);
+
+        //min heap to store the ending dates in increasing order so that we attend the event 
+        //first which is ending sooner
+        priority_queue<int,vector<int>, greater<int>> end_date;
+
+        int eventNo=0,day=1,ans=0;
+        while(day<=fday){
+
+            while(eventNo<n && events[eventNo][0]==day){
+                end_date.push(events[eventNo][1]);
+                eventNo++;
             }
 
-            while(!mini.empty() && mini.top()<day){
-                mini.pop();
+            while(!end_date.empty() && end_date.top()<day){
+                end_date.pop();
             }
 
-            if(!mini.empty()){
-                mini.pop();
+            if(!end_date.empty()){
+                end_date.pop();
                 ans++;
             }
             day++;
