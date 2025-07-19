@@ -12,7 +12,7 @@ public:
         }
         sort(v.begin(),v.end());
         vector<string>ans;
-        set<string> st;
+        unordered_set<string> st;
         for(int i=0;i<n;i++){
             string s=v[i].second;
             if(st.empty()){
