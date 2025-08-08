@@ -7,19 +7,19 @@ public:
 
         if(dp[a][b]!=-1)return dp[a][b];
         //do first job
-        double first= (ans(a-100,b,dp));
+        double first= (ans(a-4,b,dp));
         //do second job
-        double second=(ans(a-75,b-25,dp));
+        double second=(ans(a-3,b-1,dp));
         //do third
-        double third=(ans(a-50,b-50,dp));
+        double third=(ans(a-2,b-2,dp));
         //do fourth
-        double fourth=(ans(a-25,b-75,dp));
+        double fourth=(ans(a-1,b-3,dp));
 
         return dp[a][b]=0.25*(first+second+third+fourth);
     }
     double soupServings(int n) {
         if(n>4450)return 1;
-        vector<vector<double>> dp(n+1,vector<double>(n+1,-1));
-        return 4*ans(n,n,dp);
+        vector<vector<double>> dp((n+24)/25 +1,vector<double>((n+24)/25 +1,-1));
+        return 4*ans((n+24)/25,(n+24)/25,dp);
     }
 };
