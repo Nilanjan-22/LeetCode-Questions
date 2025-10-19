@@ -13,7 +13,6 @@ public:
                 arr[nums[i]%value]++;
             }
         }
-        for(int i=0;i<value;i++)cout<<arr[i]<<" ";
         int minicnt=INT_MAX, rem=-1;
         for(int i=0;i<value;i++){
             if(arr[i]<minicnt){
