@@ -10,10 +10,8 @@ public:
                 sum%=10;
                 cur.push_back(sum+'0');
             }
-            cout<<prev<<" ";
             prev=cur;
         }
-        cout<<prev;
         return prev[0]==prev[1];
         
     }
