@@ -14,7 +14,6 @@ public:
         if(cnt%2==1 || cnt==0)return ans;
         else{
             ans=1;
-            // if(points.size()<2)return ans;
             for(int j=0;j<points.size()-1;){
                 long long mul=(points[j+1]-points[j]);
                 ans%=m;
