@@ -11,24 +11,24 @@ public:
 
         if(dp[i][k][type]!=LLONG_MIN)return dp[i][k][type];
         //explore all posibilities
-
+        long long profit;
         if(type==0){
             long long skip=ans(i+1,type,k,prev,prices,dp);
             long long buy = -prices[i]+ ans(i+1,1,k,0,prices,dp);
             long long sell = prices[i]+ans(i+1,2,k,prices[i],prices,dp);
-            return dp[i][k][type] = max(skip,max(buy,sell));
+            profit= max(skip,max(buy,sell));
         }
         else if(type==1){
             long long skip=ans(i+1,type,k,prev,prices,dp);
             long long sell = prices[i]+ans(i+1,0,k-1,0,prices,dp);
-            return dp[i][k][type] = max(skip,sell);
+            profit = max(skip,sell);
         }
         else{
             long long skip=ans(i+1,type,k,prev,prices,dp);
             long long buy = -prices[i]+ans(i+1,0,k-1,0,prices,dp);
-            return dp[i][k][type] = max(skip,buy);
+            profit = max(skip,buy);
         }
-        return 0;
+        return dp[i][k][type]=profit;
 
     }
     long long maximumProfit(vector<int>& prices, int k) {
