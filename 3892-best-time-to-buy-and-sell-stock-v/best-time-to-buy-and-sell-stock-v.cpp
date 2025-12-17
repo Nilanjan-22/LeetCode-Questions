@@ -1,39 +1,45 @@
 class Solution {
 public:
-//0 currently nno transaction
-//1 ->normal
-//2 -> short selling
-
-    long long ans(int i,int type, int k, int prev,vector<int>& prices, vector<vector<vector<long long>>>& dp){
-        if(k==0)return 0;
-        else if(i>=prices.size() && type==2)return -prev;
-        else if(i>=prices.size())return 0;
-
-        if(dp[i][k][type]!=LLONG_MIN)return dp[i][k][type];
-        //explore all posibilities
-        long long profit;
-        if(type==0){
-            long long skip=ans(i+1,type,k,prev,prices,dp);
-            long long buy = -prices[i]+ ans(i+1,1,k,0,prices,dp);
-            long long sell = prices[i]+ans(i+1,2,k,prices[i],prices,dp);
-            profit= max(skip,max(buy,sell));
+    long long ans(int i,int o, vector<int>& p, int k, vector<vector<vector<long long>>>& dp){
+        
+        if(i==p.size()-1){
+            if(o==2)return 0;
+            if(o==1) return -p[i]; 
+            return p[i];
         }
-        else if(type==1){
-            long long skip=ans(i+1,type,k,prev,prices,dp);
-            long long sell = prices[i]+ans(i+1,0,k-1,0,prices,dp);
-            profit = max(skip,sell);
+        if(k==0)return 0;
+        if(dp[i][o][k]!=-1)return dp[i][o][k];
+        long long profit;
+        if(o==2){
+            // buy
+            long long buy = -p[i] + ans(i+1,0,p,k,dp);
+            //sell
+            long long sell = p[i]+ ans(i+1,1,p,k,dp);
+            // dont do anything 
+            long long dnd = ans(i+1,2,p,k,dp);
+
+            profit= max(buy,max(sell,dnd));
+        }
+        else if(o==1){
+            //buy
+            long long buy= -p[i] + ans(i+1,2,p,k-1,dp);
+            //dont do anything
+            long long dnd = ans(i+1,1,p,k,dp);
+            profit= max(dnd,buy);
         }
         else{
-            long long skip=ans(i+1,type,k,prev,prices,dp);
-            long long buy = -prices[i]+ans(i+1,0,k-1,0,prices,dp);
-            profit = max(skip,buy);
+            //sell
+            long long sell = p[i]+ans(i+1,2,p,k-1,dp);
+            // dont do anything
+            long long dnd = ans(i+1,0,p,k,dp);
+            profit = max(sell,dnd);
         }
-        return dp[i][k][type]=profit;
-
+        return dp[i][o][k]=profit;
     }
     long long maximumProfit(vector<int>& prices, int k) {
         int n=prices.size();
-        vector<vector<vector<long long>>> dp(n+1,vector<vector<long long>>(n/2+1, vector<long long>(3,LLONG_MIN)));
-        return ans(0,0,k,0,prices,dp);
+        vector<vector<vector<long long>>> dp(n, vector<vector<long long>>(3,vector<long long>(k+1,-1)));
+        return ans(0,2,prices,k,dp);
+
     }
 };
