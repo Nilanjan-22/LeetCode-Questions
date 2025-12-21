@@ -1,7 +1,7 @@
 class Solution {
 public:
     long long minCost(string s, vector<int>& cost) {
-        map<char,long long> mp;
+        unordered_map<char,long long> mp;
         long long total=0;
         for(int i=0;i<s.size();i++){
             if(mp.find(s[i])==mp.end())mp[s[i]]=cost[i];
