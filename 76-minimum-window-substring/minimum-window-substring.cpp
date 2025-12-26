@@ -1,11 +1,5 @@
 class Solution {
 public:
-    bool check(map<char,pair<int,int>>& hashmap){
-        for(auto it: hashmap){
-            if(it.second.first>it.second.second)return false;
-        }
-        return true;
-    }
     string minWindow(string s, string t) {
         map<char,pair<int,int>> hashmap; //stores the (need,present) of each character
 
@@ -20,13 +14,14 @@ public:
         int l=0,r=0; //pointers for finding the window
 
         //in each movement we will check through the map to check if we found the ans
-        int ml=-1,mini=-1,prevr=-1; //pointers of the minimum window and its size
+        int ml=-1,mini=-1,prevr=-1,cnt=0; //pointers of the minimum window and its size
         while(r<s.size() && l<=r){
             if(hashmap.find(s[r])!=hashmap.end() && r!=prevr){
                 hashmap[s[r]].second++;
                 prevr=r;
+                if(hashmap[s[r]].first>=hashmap[s[r]].second)cnt++;
             }
-            if(check(hashmap)){
+            if(cnt==t.size()){
                 if(mini==-1){
                     mini=r-l+1;
                     ml=l;
@@ -36,7 +31,10 @@ public:
                     ml=l;
                 }
 
-                if(hashmap.find(s[l])!=hashmap.end())hashmap[s[l]].second--;
+                if(hashmap.find(s[l])!=hashmap.end()){
+                    hashmap[s[l]].second--;
+                    if(hashmap[s[l]].first>hashmap[s[l]].second)cnt--;
+                }
                 l++;
             }
             else{
