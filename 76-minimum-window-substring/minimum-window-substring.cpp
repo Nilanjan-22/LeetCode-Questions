@@ -1,7 +1,7 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        map<char,pair<int,int>> hashmap; //stores the (need,present) of each character
+        unordered_map<char,pair<int,int>> hashmap; //stores the (need,present) of each character
 
         for(int i=0;i<t.size();i++){
             if(hashmap.find(t[i])==hashmap.end()){
