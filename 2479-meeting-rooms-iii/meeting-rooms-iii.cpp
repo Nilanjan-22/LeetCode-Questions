@@ -1,43 +1,49 @@
 class Solution {
 public:
     int mostBooked(int n, vector<vector<int>>& meetings) {
-        vector<long long> busy(n, 0); // Room end times
-        vector<int> count(n, 0);      // Booking counts per room
+        vector<int> cnt(n,0);
 
-        sort(meetings.begin(), meetings.end());
+        priority_queue<int , vector<int> , greater<int>> room;
+        priority_queue<pair<long long,int>, vector<pair<long long,int>> , greater<pair<long long,int>>> busy;
 
-        for (auto& meeting : meetings) {
-            int start = meeting[0], end = meeting[1];
-            long long earliest = LLONG_MAX;
-            int roomIndex = -1;
-            bool assigned = false;
+        for(int i=0;i<n;i++)room.push(i);
 
-            for (int i = 0; i < n; ++i) {
-                if (busy[i] < earliest) {
-                    earliest = busy[i];
-                    roomIndex = i;
-                }
-                if (busy[i] <= start) {
-                    busy[i] = end;
-                    count[i]++;
-                    assigned = true;
-                    break;
-                }
+        sort(meetings.begin(),meetings.end());
+
+        for(int i=0;i<meetings.size();i++){
+            long long duration = meetings[i][1]-meetings[i][0];
+            long long start=meetings[i][0];
+
+            while(!busy.empty() && busy.top().first<=start){
+                room.push(busy.top().second);
+                busy.pop();
             }
 
-            if (!assigned) {
-                busy[roomIndex] += (end - start);
-                count[roomIndex]++;
+            if(!room.empty()){
+                int roomindex=room.top();
+                room.pop();
+                cnt[roomindex]++;
+
+                busy.push({start+duration,roomindex});
+            }
+            else{
+                int roomindex=busy.top().second;
+                long long time=busy.top().first;
+
+                cnt[roomindex]++;
+                busy.pop();
+                busy.push({time+duration,roomindex});
+            }
+        }
+
+        int mostbook=-1,maxi=-1;
+        for(int i=0;i<n;i++){
+            if(maxi<cnt[i]){
+                maxi=cnt[i];
+                mostbook=i;
             }
         }
 
-        int res = 0, maxCount = 0;
-        for (int i = 0; i < n; ++i) {
-            if (count[i] > maxCount) {
-                maxCount = count[i];
-                res = i;
-            }
-        }
-        return res;
+        return mostbook;
     }
 };
