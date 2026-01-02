@@ -1,7 +1,7 @@
 class FreqStack {
 public:
     vector<stack<int>> v;
-    map<int,int> frq;
+    unordered_map<int,int> frq;
     FreqStack() {
         stack<int> temp ={};
         v.resize(1,temp);
