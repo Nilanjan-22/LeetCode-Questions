@@ -1,18 +1,38 @@
 class Solution {
 public:
-    int numOfWays(int n) {
-        int m=1e9+7;
-        long long a=6,b=6;  //a=pattern aba and b=abc
-        //from aba pattern 3 aba pattern and 2 abc pattern can be taken
-        //from abc pattern 2aba pattern and 2 abc pattern can be taken
-
-        for(int i=2;i<n+1;i++){
-            long long na=(a*3+b*2)%m;
-            long long nb=(a*2+b*2)%m;
-
-            a=na;
-            b=nb;
+    int solve(int i, int n, int prev1, int prev2, int prev3, int mod,
+              vector<vector<vector<vector<int>>>>& dp) {
+        if (i == n) {
+            return 1;
         }
-        return (a+b)%m;
+        if (dp[i][prev1][prev2][prev3] != -1) {
+            return dp[i][prev1][prev2][prev3];
+        }
+        int ans = 0;
+        for (int col1 = 1; col1 <= 3; col1++) {
+            if (col1 == prev1) {
+                continue;
+            }
+            for (int col2 = 1; col2 <= 3; col2++) {
+                if (col2 == prev2 || col2 == col1) {
+                    continue;
+                }
+                for (int col3 = 1; col3 <= 3; col3++) {
+                    if (col3 == prev3 || col3 == col2) {
+                        continue;
+                    }
+                    ans = (ans + solve(i + 1, n, col1, col2, col3, mod, dp)) %
+                          mod;
+                }
+            }
+        }
+        return dp[i][prev1][prev2][prev3] = ans;
+    }
+    int numOfWays(int n) {
+        int mod = 1e9 + 7;
+        vector<vector<vector<vector<int>>>> dp(
+            n, vector<vector<vector<int>>>(
+                   4, vector<vector<int>>(4, vector<int>(4, -1))));
+        return solve(0, n, 0, 0, 0, mod, dp);
     }
 };
