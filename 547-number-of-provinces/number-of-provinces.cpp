@@ -6,6 +6,22 @@ public:
             if(!vis[it])dfs(it,adj,vis);
         }
     }
+    void bfs(int node, vector<vector<int>>& adj, vector<int>& vis){
+        queue<int> q;
+        q.push(node);
+        vis[node]=1;
+
+        while(!q.empty()){
+            int u=q.front();
+            q.pop();
+            for(auto it: adj[u]){
+                if(!vis[it]){
+                    vis[it]=1;
+                    q.push(it);
+                }
+            }
+        }
+    }
     int findCircleNum(vector<vector<int>>& isConnected) {
         int n=isConnected.size();
         vector<vector<int>> adj(n);
@@ -22,7 +38,7 @@ public:
         for(int i=0;i<n;i++){
             if(!vis[i]){
                 ans++;
-                dfs(i,adj,vis);
+                bfs(i,adj,vis);
             }
         }
         return ans;
