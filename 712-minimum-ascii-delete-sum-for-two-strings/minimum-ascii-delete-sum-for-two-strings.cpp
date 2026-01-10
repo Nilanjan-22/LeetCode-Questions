@@ -6,10 +6,10 @@ public:
 
         if(dp[i1][i2]!=-1)return dp[i1][i2];
         if(i1==s1.size()){
-            return dp[i1][i2]=(int)s2[i2]+ans(i1,i2+1,s1,s2);;
+            return dp[i1][i2]=(int)s2[i2]+ans(i1,i2+1,s1,s2);
         }
         else if(i2==s2.size()){
-            return dp[i1][i2]=(int)s1[i1]+ans(i1+1,i2,s1,s2);;
+            return dp[i1][i2]=(int)s1[i1]+ans(i1+1,i2,s1,s2);
         }
         else if(s1[i1]==s2[i2]){
             int skip=ans(i1+1,i2+1,s1,s2);
