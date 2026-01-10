@@ -1,53 +1,53 @@
 class Solution {
 public:
-    void bfs(int n, int m,queue<pair<int,int>>& q, vector<vector<int>>& image, int color, int inic, vector<vector<int>> visited){
+    vector<vector<int>> photo;
+    queue<pair<int,int>> q;
+    vector<vector<int>> vis;
+    int n,m,paint;
+    void bfs(int color){
         while(!q.empty()){
-            int i= q.front().first;
-            int j= q.front().second;
-            q.pop();
-            image[i][j]=color;
+            int i=q.front().first;
+            int j=q.front().second;
 
-            int n1,n2;
-            //right
-            n1=i,n2=j+1;
-            if(n1>=0&& n1<n && n2>=0 && n2<m && visited[n1][n2]!=1&&image[n1][n2]==inic){
-                visited[n1][n2]=1;
-                q.push({n1,n2});
-            }
-            //left
-            n1=i,n2=j-1;
-            if(n1>=0&& n1<n && n2>=0 && n2<m && visited[n1][n2]!=1 &&image[n1][n2]==inic){
-                visited[n1][n2]=1;
-                q.push({n1,n2});
-            }
+            q.pop();
+
             //up
-            n1=i-1,n2=j;
-            if(n1>=0&& n1<n && n2>=0 && n2<m && visited[n1][n2]!=1 &&image[n1][n2]==inic) {
-                visited[n1][n2]=1;
-                q.push({n1,n2});
+            if(i-1>-1 && photo[i-1][j]==color && !vis[i-1][j]){
+                q.push({i-1,j});
+                vis[i-1][j]=1;
+                photo[i-1][j]=paint;
             }
             //down
-            n1=i+1,n2=j;
-            if(n1>=0&& n1<n && n2>=0 && n2<m && visited[n1][n2]!=1 &&image[n1][n2]==inic){
-                visited[n1][n2]=1;
-                q.push({n1,n2});
+            if(i+1<n && photo[i+1][j]==color && !vis[i+1][j]){
+                q.push({i+1,j});
+                vis[i+1][j]=1;
+                photo[i+1][j]=paint;
             }
-
+            //left
+            if(j-1>-1 && photo[i][j-1]==color && !vis[i][j-1]){
+                q.push({i,j-1});
+                vis[i][j-1]=1;
+                photo[i][j-1]=paint;
+            }
+            //right
+            if(j+1<m && photo[i][j+1]==color && !vis[i][j+1]){
+                q.push({i,j+1});
+                vis[i][j+1]=1;
+                photo[i][j+1]=paint;
+            }
         }
-
     }
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        vector<vector<int>> imgCopy=image;
-        int n=image.size();
-        int m=image[0].size();
-        vector<vector<int>> visited(n,(vector<int>(m,0)));
-        int iniC=image[sr][sc];
-        if(image[sr][sc] != color){
-            queue<pair<int,int>> q;
-            q.push({sr,sc});
-            visited[sr][sc]=1;
-            bfs(n,m,q,imgCopy,color,iniC,visited);
-        }
-        return imgCopy;
+        photo=image;
+        n=image.size();
+        m=image[0].size();
+        vis.resize(n,vector<int>(m,0));
+        paint=color;
+        int ini=photo[sr][sc];
+        q.push({sr,sc});
+        vis[sr][sc]=1;
+        photo[sr][sc]=paint;
+        bfs(ini);
+        return photo;
     }
 };
