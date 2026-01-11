@@ -1,47 +1,38 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        unordered_map<char,pair<int,int>> hashmap; //stores the (need,present) of each character
-
+        map<char,pair<int,int>> mp; // char-> req, cur
         for(int i=0;i<t.size();i++){
-            if(hashmap.find(t[i])==hashmap.end()){
-                hashmap[t[i]].first=1;
-                hashmap[t[i]].second=0;
-            }
-            else hashmap[t[i]].first++;
+            mp[t[i]].first++;
         }
-
-        int l=0,r=0; //pointers for finding the window
-
-        //in each movement we will check through the map to check if we found the ans
-        int ml=-1,mini=-1,prevr=-1,cnt=0; //pointers of the minimum window and its size
+        int l=0,r=0,prev=-1;
+        int cnt=0;
+        int ml=0,mr=INT_MAX-1;
         while(r<s.size() && l<=r){
-            if(hashmap.find(s[r])!=hashmap.end() && r!=prevr){
-                hashmap[s[r]].second++;
-                prevr=r;
-                if(hashmap[s[r]].first>=hashmap[s[r]].second)cnt++;
+            if(r!=prev){
+                mp[s[r]].second++;
+                if(mp[s[r]].first>=mp[s[r]].second)cnt++;
+                prev=r;
             }
-            if(cnt==t.size()){
-                if(mini==-1){
-                    mini=r-l+1;
+            if(cnt!=t.size())r++;
+            else{
+                int size=r-l+1;
+                int msize=mr-ml+1;
+                if(msize>size){
+                    mr=r;
                     ml=l;
                 }
-                else if(mini>r-l+1){
-                    mini=r-l+1;
-                    ml=l;
-                }
-
-                if(hashmap.find(s[l])!=hashmap.end()){
-                    hashmap[s[l]].second--;
-                    if(hashmap[s[l]].first>hashmap[s[l]].second)cnt--;
-                }
+                mp[s[l]].second--;
+                if(mp[s[l]].first>mp[s[l]].second)cnt--;
                 l++;
             }
-            else{
-                r++;
-            }
         }
 
-        return ml == -1? "":s.substr(ml,mini);
+        string ans="";
+        if(mr==INT_MAX-1)return ans;
+        for(int i=ml;i<=mr;i++){
+            ans.push_back(s[i]);
+        }
+        return ans;
     }
 };
