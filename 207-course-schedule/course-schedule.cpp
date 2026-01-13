@@ -1,35 +1,31 @@
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<vector<int>> adj(numCourses);
+        int N=numCourses;
+        vector<vector<int>> adj(N);
+        vector<int> indeg(N);
         for(int i=0;i<prerequisites.size();i++){
-            adj[prerequisites[i][0]].push_back(prerequisites[i][1]);
+            int u=prerequisites[i][1];
+            int v=prerequisites[i][0];
+            indeg[v]++;
+            adj[u].push_back(v);
         }
-
-        vector<int>inDeg(numCourses);
-        for(int i=0;i<numCourses;i++){
-            for(auto it: adj[i])inDeg[it]++;
-        }
-
+        
+        vector<int> toposort;
         queue<int> q;
-        for(int i=0;i<numCourses;i++){
-            if(inDeg[i]==0)q.push(i);
+        for(int i=0;i<N;i++){
+            if(indeg[i]==0)q.push(i);
         }
-
-        vector<int> topo;
         while(!q.empty()){
-            int node=q.front();
-            topo.push_back(node);
+            int u=q.front();
+            toposort.push_back(u);
             q.pop();
-
-            for(auto it: adj[node]){
-                inDeg[it]--;
-                if(inDeg[it]==0)q.push(it);
+            
+            for(auto it: adj[u]){
+                indeg[it]--;
+                if(indeg[it]==0)q.push(it);
             }
         }
-
-        if(topo.size()==numCourses)return true;
-        else return false;
-
+        return toposort.size()==N;
     }
 };
