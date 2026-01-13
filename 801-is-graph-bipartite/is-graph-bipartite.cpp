@@ -9,7 +9,7 @@ public:
             if(!vis[it]){
                 val=val&& dfs(it,u,d+1,vis,graph);
             }
-            else if(it!=par && (dist[u]-dist[it])%2==0 && dist[u]!=dist[it]){
+            else if(it!=par && (dist[u]-dist[it])%2==0 ){
                 return false;
             }
         }
