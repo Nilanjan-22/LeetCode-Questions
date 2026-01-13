@@ -11,7 +11,6 @@ public:
             }
             sum+=l*l;
         }
-        cout<<sum1<<" "<<sum/2.0<<" "<<y<<endl;
         return {sum1,sum/2.0};
     }
     double separateSquares(vector<vector<int>>& squares) {
