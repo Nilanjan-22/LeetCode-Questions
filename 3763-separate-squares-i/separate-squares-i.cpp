@@ -16,16 +16,11 @@ public:
     }
     double separateSquares(vector<vector<int>>& squares) {
         double low=0,high=1e9;
-        double ans=-1;
         while((high-low)>1e-5){
             double mid=low+(high-low)/2.0;
             pair<double,double> s=pos(mid,squares);
             double sum1=s.first;
             double hsum=s.second;
-            if(abs(sum1-hsum)<double(1e-1)){
-                cout<<abs(sum1-hsum)<<endl;
-                ans=mid;
-            }
             if(sum1>=hsum)high=mid;
             else low=mid;
         }
