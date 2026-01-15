@@ -2,29 +2,32 @@ class Solution {
 public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         int n=graph.size();
-        vector<vector<int>> in(n);
-        vector<int> outDeg(n);
-        for(int i=0;i<n;i++){
-            outDeg[i]=graph[i].size();
-            for(auto it: graph[i])in[it].push_back(i);
+        vector<int> outdeg(n);
+        vector<vector<int>> adj(n);
+        for(int i=0;i<graph.size();i++){
+            for(auto it: graph[i])adj[it].push_back(i);
+
+            outdeg[i]=graph[i].size();
         }
 
         queue<int> q;
         for(int i=0;i<n;i++){
-            if(outDeg[i]==0)q.push(i);
+            if(outdeg[i]==0)q.push(i);
         }
 
-        vector<int> topo;
+        vector<int> safe;
         while(!q.empty()){
-            int node=q.front();
-            topo.push_back(node);
+            int u=q.front();
             q.pop();
-            for(auto it: in[node]){
-                outDeg[it]--;
-                if(outDeg[it]==0)q.push(it);
+            safe.push_back(u);
+            for(auto it: adj[u]){
+                outdeg[it]--;
+                if(outdeg[it]==0)q.push(it);
             }
         }
-        sort(topo.begin(),topo.end());
-        return topo;
+
+        sort(safe.begin(),safe.end());
+        return safe;
+
     }
 };
