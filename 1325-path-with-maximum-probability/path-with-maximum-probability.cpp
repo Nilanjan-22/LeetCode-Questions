@@ -10,22 +10,23 @@ public:
             adj[v].push_back({u,p});
         }
 
-        priority_queue<pair<double,int> > pq;
+        set<pair<double,int> > pq;
         vector<double> prob(n,0.0);
         prob[start_node]=1.0;
-        pq.push({1.0,start_node});
+        pq.insert({1.0,start_node});
 
         while(!pq.empty()){
-            double p=pq.top().first;
-            int u=pq.top().second;
-            pq.pop();
+            double p=(*pq.rbegin()).first;
+            int u=(*pq.rbegin()).second;
+            pq.erase({p,u});
             for(auto it: adj[u]){
                 double p1=it.second;
                 int v=it.first;
 
                 if(p1*p>prob[v]){
+                    if(prob[v]!=0)pq.erase({prob[v],v});
                     prob[v]=p1*p;
-                    pq.push({prob[v],v});
+                    pq.insert({prob[v],v});
                 }
             }
         }
