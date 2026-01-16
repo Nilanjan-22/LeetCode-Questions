@@ -3,7 +3,7 @@ public:
     int maximizeSquareArea(int m, int n, vector<int>& hFences, vector<int>& vFences) {
         long long ans=-1;
         int mod=1e9+7;
-        unordered_map<int,int> mp; //diff, first occurence
+        unordered_map<int,long long> mp; //diff, first occurence
         hFences.push_back(m);
         hFences.push_back(1);
         vFences.push_back(n);
@@ -17,12 +17,12 @@ public:
 
                 if(mp.find(h-v)==mp.end())mp[h-v]=h;
                 else {
-                    long long fh=mp[h-v];
-                    ans=max(ans,h-fh);
+                    long long dif=h-mp[h-v];
+                    ans=max(ans,dif);
                 }
             }
-        }
-        if(ans==-1 || ans==0)return-1; 
+        } 
+        if(ans==0 || ans==-1)return -1;
         return ans*ans%mod;
 
     }
