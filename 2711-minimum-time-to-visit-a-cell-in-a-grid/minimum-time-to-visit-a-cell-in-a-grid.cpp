@@ -12,6 +12,7 @@ public:
             int j=pq.top()[2];
             int time=pq.top()[0];
 
+            if(i==n-1 && j==m-1)return time;
             pq.pop();
 
             bool loop=false;
