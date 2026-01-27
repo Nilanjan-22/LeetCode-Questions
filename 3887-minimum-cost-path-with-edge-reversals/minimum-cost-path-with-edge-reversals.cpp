@@ -15,6 +15,7 @@ public:
         while(!pq.empty()){
             int w=pq.top().first;
             int v=pq.top().second;
+            if(v==n-1)return w;
             pq.pop();
             for(auto it: adj[v]){
                 if(it.second+w<dist[it.first]){
