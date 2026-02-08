@@ -11,19 +11,16 @@
  */
 class Solution {
 public:
-    int check(TreeNode* node){
-        if(node==NULL)return 0;
-
-        int lh =check(node->left);
-        int rh= check(node->right);
-
-        if(abs(lh-rh)>1)return -1;
-        if(lh==-1 || rh==-1)return -1;
-
-        else return max(lh,rh)+1;
+    pair<int,bool> recursion(TreeNode* root){
+        if(root==NULL)return {0,true};
+        pair<int,bool> l=recursion(root->left);
+        pair<int,bool> r=recursion(root->right);
+        if(l.second==false || r.second==false)return {-1,false};
+        if(abs(l.first-r.first)<=1)return {max(l.first+1,r.first+1),true};
+        else return {-1,false};
     }
     bool isBalanced(TreeNode* root) {
-        if(check(root)>=0) return true;
-        return false;
+        pair<int,bool> ans=recursion(root);
+        return ans.second;
     }
 };
