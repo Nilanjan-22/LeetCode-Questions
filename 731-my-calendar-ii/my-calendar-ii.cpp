@@ -13,7 +13,7 @@ public:
         int ongoingEvents = 0;
         for (auto &[time, change] : eventCount) {
             ongoingEvents += change;
-            if (ongoingEvents >= 3) {
+            if (ongoingEvents == 3) {
                 eventCount[start]--;
                 eventCount[end]++;
                 return false;
