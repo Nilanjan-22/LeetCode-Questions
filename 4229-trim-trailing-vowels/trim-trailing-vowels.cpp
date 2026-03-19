@@ -1,15 +1,11 @@
 class Solution {
 public:
     string trimTrailingVowels(string s) {
-        bool cons=false;
-        set<char> st ={'a','e','i','o','u'};
         string ans;
+        bool f=false;
         for(int i=s.size()-1;i>=0;i--){
-            if(!cons && st.find(s[i])!=st.end()){
-                continue;
-            }
-            else{
-                cons=true;
+            if((s[i]!='a' &&s[i]!='e' &&s[i]!='i' && s[i]!='o' && s[i]!='u') || f){
+                f=true;
                 ans.push_back(s[i]);
             }
         }
