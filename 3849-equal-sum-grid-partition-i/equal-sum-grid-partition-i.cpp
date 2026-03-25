@@ -21,16 +21,12 @@ public:
         if(sum%2==1)return false;
 
         for(int i=0;i<n;i++){
-            cout<<prefh[i][m-1]<<" ";
             if(prefh[i][m-1]==(sum/2))return true;
         }
-        cout<<endl;
 
         for(int j=0;j<m;j++){
-            cout<<prefv[n-1][j]<<" ";
             if(prefv[n-1][j]==(sum/2))return true;
         }
-        cout<<endl;
         return false;
     }
 };
