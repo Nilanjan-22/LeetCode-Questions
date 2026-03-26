@@ -4,7 +4,7 @@ public:
         long long sum=0;
         int n=grid.size(),m=grid[0].size();
 
-        map<long long,int> freq;
+        unordered_map<long long,int> freq;
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 freq[grid[i][j]]++;
@@ -12,7 +12,7 @@ public:
             }
         }
 
-        map<long long,int> temp=freq;
+        unordered_map<long long,int> temp=freq;
         long long sum1=0;
         //trying horizontal cut
         for(int i=0;i<n;i++){
