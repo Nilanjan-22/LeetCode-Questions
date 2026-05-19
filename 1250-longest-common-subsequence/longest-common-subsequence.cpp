@@ -5,12 +5,13 @@ public:
 
         if(dp[pos1][pos2]!=-1)return dp[pos1][pos2];
 
+        if(s1[pos1]==s2[pos2])return dp[pos1][pos2]=1+solve(pos1+1,pos2+1,s1,s2,dp);
+
         int maxLength=0;
 
         maxLength=max(maxLength, solve(pos1+1,pos2,s1,s2,dp));
         maxLength=max(maxLength, solve(pos1,pos2+1,s1,s2,dp));
 
-        if(s1[pos1]==s2[pos2])maxLength=max(maxLength, 1+solve(pos1+1,pos2+1,s1,s2,dp));
 
         return dp[pos1][pos2]=maxLength;
     }
