@@ -9,15 +9,13 @@ public:
                 else dp[i][j]=max(dp[i-1][j], dp[i][j-1]);
             }
         }
-        if(dp[n][m]==0)return str1+str2;
         string longestCommonSub="";
         int i=n,j=m;
-        while(i>=1 && j>=1){
+        while(i>=1 && j>=1 && dp[i][j]>0){
             int left=-1,up=-1;
             if(j>1)left=dp[i][j-1];
             if(i>1)up=dp[i-1][j];
             
-            if(dp[i][j]==0)break;
             if(dp[i][j]> left && dp[i][j]>up){
                 longestCommonSub.push_back(str1[i-1]);
                 i--;
