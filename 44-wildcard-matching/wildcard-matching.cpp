@@ -15,7 +15,6 @@ public:
         bool possible=false;
         if(p[j]=='*'){
             possible |= solve(i+1,j,s,p,dp);
-            possible |= solve(i+1,j+1,s,p,dp);
             possible |= solve(i,j+1,s,p,dp);
         }
         if(p[j]=='?' || p[j]==s[i]){
