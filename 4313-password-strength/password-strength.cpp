@@ -2,7 +2,7 @@ class Solution {
 public:
     int passwordStrength(string password) {
         int strength=0;
-        set<char>alreadyFound;
+        unordered_set<char>alreadyFound;
         for(int i=0;i<password.size();i++){
             if(alreadyFound.find(password[i])!=alreadyFound.end())continue;
             if(password[i]-'a'>=0 && password[i]-'a'<26)strength++;
