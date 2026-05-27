@@ -18,7 +18,6 @@ public:
                 num++;
                 len++;
             }
-            cout<<nums[i]<<" ";
             longestLen=max(len,longestLen);
         }
 
