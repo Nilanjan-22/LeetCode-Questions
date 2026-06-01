@@ -1,31 +1,32 @@
 class Solution {
 public:
-    int ans(int i, int k, vector<int>& arr,vector<int>& dp){
+    int solve(int i, int k, vector<int>& arr,vector<int>& dp){
         if(i>=arr.size())return 0;
         if(dp[i]!=-1)return dp[i];
 
-        int maxsum=0;
-        int maxi=0;
-        for(int j=i; j<i+k && j<arr.size(); j++){
+        int maxi=-1;
+        int maxValue=0;
+        for(int j=i;j<min(i+k,(int)arr.size());j++){
             maxi=max(maxi,arr[j]);
-            int sum=maxi*(j-i+1)+ ans(j+1,k,arr,dp);
-            maxsum=max(maxsum,sum);
+            maxValue=max(maxValue, maxi*(j+1-i)+solve(j+1,k,arr,dp));
         }
-        return dp[i] = maxsum;
+        return dp[i]=maxValue;
     }
     int maxSumAfterPartitioning(vector<int>& arr, int k) {
         int n=arr.size();
         vector<int> dp(n+1,0);
+
         for(int i=n-1;i>=0;i--){
-            int maxi=0;
-            int maxsum=0;
-            for(int j=i; j<i+k && j<arr.size(); j++){
+            int maxi=-1;
+            int maxValue=0;
+            for(int j=i;j<min(i+k,(int)arr.size());j++){
                 maxi=max(maxi,arr[j]);
-                int sum=maxi*(j-i+1)+ dp[j+1];
-                maxsum=max(maxsum,sum);
+                maxValue=max(maxValue, maxi*(j+1-i)+solve(j+1,k,arr,dp));
             }
-            dp[i] = maxsum;
+            dp[i]=maxValue;
         }
+
         return dp[0];
+        
     }
 };
