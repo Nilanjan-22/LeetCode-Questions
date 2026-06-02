@@ -1,41 +1,44 @@
 class Solution {
 public:
-    int ans(vector<int>& heights){
-        int n=heights.size();
-        vector<int> nse(n),pse(n);
-        stack<int> st={};
-
-        for(int i=0;i<n;i++){
-            while(!st.empty() && heights[st.top()]>=heights[i])st.pop();
+    int maxAreaOfBuildings(vector<int>& buildings){
+        int n=buildings.size();
+        vector<int> nse(n), pse(n);
+        pse[0]=-1;
+        nse[n-1]=n;
+        stack<int> st;
+        st.push(0);
+        for(int i=1;i<n;i++){
+            while(!st.empty() && buildings[st.top()]>=buildings[i])st.pop();
             if(st.empty())pse[i]=-1;
             else pse[i]=st.top();
             st.push(i);
         }
-
         st={};
-        for(int i=n-1;i>=0;i--){
-            while(!st.empty() && heights[st.top()]>=heights[i])st.pop();
+        st.push(n-1);
+        for(int i=n-2;i>=0;i--){
+            while(!st.empty() && buildings[st.top()]>=buildings[i])st.pop();
             if(st.empty())nse[i]=n;
             else nse[i]=st.top();
             st.push(i);
         }
 
-        int maxarea=0;
+        int maxArea=0;
         for(int i=0;i<n;i++){
-            maxarea=max(maxarea, (nse[i]-pse[i]-1)*heights[i]);
+            maxArea=max(maxArea, buildings[i]*(nse[i]-pse[i]-1));
         }
-        return maxarea;
+        return maxArea;
     }
     int maximalRectangle(vector<vector<char>>& matrix) {
-        vector<int> h(matrix[0].size(),0);
-        int maxarea=-1;
+        int n=matrix[0].size();
+        vector<int> buildings(n,0);
+        int maxArea=0;
         for(int i=0;i<matrix.size();i++){
-            for(int j=0;j<matrix[0].size();j++){
-                if(matrix[i][j]=='0')h[j]=0;
-                else h[j]++;
+            for(int j=0;j<n;j++){
+                if(matrix[i][j]=='1')buildings[j]+=1;
+                else buildings[j]=0;
             }
-            maxarea=max(maxarea,ans(h));
+            maxArea=max(maxArea, maxAreaOfBuildings(buildings));
         }
-        return maxarea;
+        return maxArea;
     }
 };
