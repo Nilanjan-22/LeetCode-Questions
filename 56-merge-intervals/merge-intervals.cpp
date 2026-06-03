@@ -1,22 +1,19 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        map<int,int> time;
-        for(int i=0;i<intervals.size();i++){
-            time[intervals[i][0]]++;
-            time[intervals[i][1]]--;
-        }
+        sort(intervals.begin(),intervals.end());
 
-        int sum=0, st=-1;
+        int st=-1,en=-1;
         vector<vector<int>> mergedIntervals;
-        for(auto it: time){
-            if(sum==0)st=it.first;
-            sum+=it.second;
-
-            if(sum==0){
-                mergedIntervals.push_back({st,it.first});
+        for(auto it: intervals){
+            if(en<it[0]){
+                if(en!=-1)mergedIntervals.push_back({st,en});
+                st=it[0];
+                en=it[1];
             }
+            else en=max(it[1],en);
         }
+        mergedIntervals.push_back({st,en});
 
         return mergedIntervals;
     }
