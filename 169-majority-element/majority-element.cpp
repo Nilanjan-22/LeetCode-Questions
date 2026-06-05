@@ -10,10 +10,10 @@ public:
             else if(nums[i]==majority)cnt++;
             else {
                 cnt--;
-                if(cnt==0){
-                    majority=nums[i];
-                    cnt++;
-                }
+                // if(cnt==0){
+                //     majority=nums[i];
+                //     cnt++;
+                // }
             }
         }
         return majority;
