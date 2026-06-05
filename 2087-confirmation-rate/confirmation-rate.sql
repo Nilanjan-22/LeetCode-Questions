@@ -1,12 +1,12 @@
 # Write your MySQL query statement below
 select s.user_id as 'user_id' , 
 round(
-    (sum(case
-        when c.action is null then 0
-        when c.action = 'timeout' then 0
+    (count(case
+        when c.action is null then null
+        when c.action = 'timeout' then null
         else  1
         end
-    )/sum(case 
+    )/count(case 
         when c.action is null then 1
         else 1
         end
