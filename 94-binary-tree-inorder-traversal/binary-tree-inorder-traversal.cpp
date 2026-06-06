@@ -11,32 +11,15 @@
  */
 class Solution {
 public:
-    //Morris Traversal
+    void inTraversal(TreeNode* node, vector<int>& inOrder){
+        if(node==NULL)return;
+        inTraversal(node->left, inOrder);
+        inOrder.push_back(node->val);
+        inTraversal(node->right , inOrder);
+    }
     vector<int> inorderTraversal(TreeNode* root) {
-        vector<int> inorder;
-
-        TreeNode* cur=root;
-        while(cur!=NULL){
-            if(cur->left==NULL){
-                inorder.push_back(cur->val);
-                cur=cur->right;
-            }
-            else{
-                TreeNode* prev=cur->left;
-                while(prev->right && prev->right!=cur){
-                    prev=prev->right;
-                }
-                if(prev->right==NULL){
-                    prev->right=cur;
-                    cur=cur->left;
-                }
-                else{
-                    prev->right=NULL;
-                    inorder.push_back(cur->val);
-                    cur=cur->right;
-                }
-            }
-        }
-        return inorder;
+        vector<int> inOrder;
+        inTraversal(root, inOrder);
+        return inOrder;
     }
 };
