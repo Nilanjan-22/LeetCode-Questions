@@ -1,8 +1,9 @@
 # Write your MySQL query statement below
-with temp as (
-    select *,
-    id-cast(row_number() over(partition by num order by id) as signed) as grp
-    from Logs
-)
+with newLogs as (
+select num, lag(num,1,null) over (order by id) as prev , lead(num,1,null) over (order by id) as next
+from
+Logs)
 
-select distinct num as 'ConsecutiveNums' from temp group by grp, num having count(id)>=3 ;
+select distinct num as 'ConsecutiveNums'
+from newLogs 
+where num=prev and num=next;
