@@ -8,7 +8,6 @@ public:
         for(int i=0;i<nums.size();i++){
             sumSoFar+=nums[i];
             if(sumCnt.find(sumSoFar-k)!=sumCnt.end())totalSubarray+=sumCnt[sumSoFar-k];
-            cout<<totalSubarray<<" ";
             sumCnt[sumSoFar]++;
         }
         return totalSubarray;
