@@ -12,49 +12,34 @@
 class Solution {
 public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        int zig =1;
-        // if zig=0 left to right else right to left
-        vector<vector<int>> ans;
-        queue<TreeNode*> q;
-        stack<TreeNode*> st;
-        vector<int> lvl;
-        if(root==NULL)return ans;
-        q.push(root);
-        while(!q.empty()){
-            if(zig==0){
-                int s=q.size();
-                for(int i=0;i<s;i++){
-                    TreeNode* n=q.front();
-                    if(n->left!=NULL)q.push(n->left);
-                    if(n->right!=NULL)q.push(n->right);
-                    lvl.push_back(st.top()->val);
-                    st.pop();
-                    q.pop();
+        vector<vector<int>> traversal;
+
+        if(root==NULL)return traversal;
+
+        queue<pair<TreeNode*,int>> nodes;
+        nodes.push({root,0});
+        vector<int> temp;
+        int prevLevel=0;
+        while(!nodes.empty()){
+            TreeNode* cur=nodes.front().first;
+            int level=nodes.front().second;
+            nodes.pop();
+            if(level!=prevLevel){
+                if(prevLevel%2==1){
+                    reverse(temp.begin(),temp.end());
                 }
-                zig=1;
-                ans.push_back(lvl);
-                lvl.clear();
+                traversal.push_back(temp);
+                temp.clear();
+                prevLevel=level;
             }
-            else{
-                int s=q.size();
-                for(int i=0;i<s;i++){
-                    TreeNode* n=q.front();
-                    if(n->left!=NULL){
-                        q.push(n->left);
-                        st.push(n->left);
-                    }
-                    if(n->right!=NULL){
-                        q.push(n->right);
-                        st.push(n->right);
-                    }
-                    lvl.push_back(n->val);
-                    q.pop();
-                }
-                zig=0;
-                ans.push_back(lvl);
-                lvl.clear();
-            }
+            temp.push_back(cur->val);
+            
+            if(cur->left!=NULL)nodes.push({cur->left,level+1});
+            if(cur->right!=NULL)nodes.push({cur->right,level+1});
         }
-        return ans;
+        if(prevLevel%2==1)reverse(temp.begin(),temp.end());
+        traversal.push_back(temp);
+        
+        return traversal;
     }
 };
