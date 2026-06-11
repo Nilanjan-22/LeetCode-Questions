@@ -11,63 +11,49 @@
  */
 class Solution {
 public:
-    bool isSymmetric(TreeNode* root) {
-        if(root==NULL)return true;
+    bool checkPalindrome(vector<pair<int,int>> & temp){
+        int n=temp.size();
+        if(n<1)return true;
+        if(n%2==1)return false;
 
-        queue<TreeNode*>q;
-        vector<int> a,b;
-        if(root->left){
-            q.push(root->left);
-            a.push_back(root->left->val);
+        int i=0,j=n-1;
+        while(i<j){
+            if(temp[i].first!=temp[j].first || temp[i].second!=-temp[j].second)return false;
+            i++;
+            j--;
         }
-        if(root->right){
-            q.push(root->right);
-            b.push_back(root->right->val);
-        }
+        return true;
+        
+    }
+    bool isSymmetric(TreeNode* root) {
+        vector<pair<int,int>> temp;
+        queue<pair<TreeNode*,int>> q;
+        q.push({root,0});
+        map<TreeNode*,int> lvl;
+        lvl[root]=0;
+        int prevLvl=0;
         while(!q.empty()){
-            int s=q.size();
-            if(s%2==1)return false;
-            reverse(b.begin(),b.end());
-            if(a!=b)return false;
-            a.clear();
-            b.clear();
-            for(int i=0;i<s/2;i++){
-               TreeNode* n=q.front();
-               if(n->left){
-                q.push(n->left);
-                a.push_back(n->left->val);
-               }
-               else{
-                a.push_back(-1000);
-               }
-               if(n->right){
-                q.push(n->right);
-                a.push_back(n->right->val);
-               }
-               else{
-                a.push_back(-1000);
-               }
-               q.pop();
+            TreeNode* node=q.front().first;
+            int hlvl=q.front().second;
+            int curlvl=lvl[node];
+            q.pop();
+            if(curlvl!=prevLvl){
+                if(!checkPalindrome(temp))return false;
+                temp.clear();
+                prevLvl=curlvl;
             }
-            for(int i=s/2;i<s;i++){
-               TreeNode* n=q.front();
-               if(n->left){
-                q.push(n->left);
-                b.push_back(n->left->val);
-               }
-               else{
-                b.push_back(-1000);
-               }
-               if(n->right){
-                q.push(n->right);
-                b.push_back(n->right->val);
-               }
-               else{
-                b.push_back(-1000);
-               }
-               q.pop();
+            if(node!=root)temp.push_back({node->val,hlvl});
+            if(node->left!=NULL){
+                q.push({node->left,hlvl-1});
+                lvl[node->left]=curlvl+1;
             }
+            if(node->right!=NULL){
+                q.push({node->right,hlvl+1});
+                lvl[node->right]=curlvl+1;
+            }
+
         }
+        if(!checkPalindrome(temp))return false;
         return true;
     }
 };
