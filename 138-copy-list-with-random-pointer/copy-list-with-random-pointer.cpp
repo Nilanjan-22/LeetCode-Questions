@@ -17,7 +17,7 @@ public:
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        map<Node*,Node*> mappedNodes;
+        unordered_map<Node*,Node*> mappedNodes;
         Node* it=head;
         while(it!=NULL){
             mappedNodes[it]=new Node(it->val);
