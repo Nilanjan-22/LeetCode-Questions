@@ -13,20 +13,19 @@ class Solution {
 public:
     int findLeftHeight(TreeNode* root){
         int height=0;
-        TreeNode* node=root;
-        while(node!=NULL){
+        while(root!=NULL){
             height++;
-            node=node->left;
+            root=root->left;
         }
         return height;
     }
 
     int findRightHeight(TreeNode* root){
         int height=0;
-        TreeNode* node=root;
-        while(node!=NULL){
+        
+        while(root!=NULL){
             height++;
-            node=node->right;
+            root=root->right;
         }
         return height;
     }
