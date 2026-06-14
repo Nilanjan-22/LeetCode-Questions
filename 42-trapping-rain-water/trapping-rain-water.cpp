@@ -26,7 +26,7 @@ public:
         }
 
         int totalWater=0;
-        map<int,int> alreadyConsidered;
+        unordered_map<int,int> alreadyConsidered;
         for(int i=0;i<n;i++){
             if(nge[i]==-1 || pge[i]==-1)continue;
             else {
