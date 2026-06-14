@@ -34,7 +34,6 @@ public:
                 int h=min(height[nge[i]],height[pge[i]])-height[i];
                 int w=nge[i]-pge[i]-1;
                 alreadyConsidered[height[i]]=nge[i];
-                cout<<"index : "<<i<<" "<<"value : "<<w*h<<endl;
                 totalWater+=w*h;
             }
         }
