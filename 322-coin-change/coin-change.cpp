@@ -1,23 +1,20 @@
 class Solution {
 public:
-    int solve(int i, int sum, int amount, vector<int>&coins , vector<vector<int>>& dp){
-        if(sum==amount)return 0;
-        if(i>=coins.size() || sum>amount)return 1e5;
+    int minCoins(int i, int amount, vector<int>& coins, vector<vector<int>>& dp){
+        if(amount==0)return 0;
+        if(amount<0 || i>=coins.size())return 1e9;
+        if(dp[i][amount]!=-1)return dp[i][amount];
 
-        if(dp[i][sum]!=-1)return dp[i][sum];
-        int minChange=1e9;
+        int take=1+minCoins(i,amount-coins[i],coins,dp);
+        int notTake=0+minCoins(i+1,amount,coins,dp);
 
-        minChange = min(minChange,solve(i+1,sum,amount,coins,dp));
-
-        if(coins[i]<=amount-sum)minChange = min(minChange,1+solve(i,sum+coins[i],amount,coins,dp));
-
-        return dp[i][sum]=minChange;
+        return dp[i][amount]=min(take,notTake);
     }
     int coinChange(vector<int>& coins, int amount) {
         int n=coins.size();
         vector<vector<int>> dp(n,vector<int>(amount+1,-1));
-        int minChange=solve(0,0,amount,coins,dp);
-        if(minChange>1e4)return -1;
-        return minChange;
+        int val=minCoins(0,amount,coins,dp);
+        if(val>=1e9)return -1;
+        return val;
     }
 };
