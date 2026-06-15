@@ -11,26 +11,26 @@
  */
 class Solution {
 public:
-    TreeNode* bt(vector<int>& po, int pos, int poe, vector<int>& io, int ios, int ioe, map<int,int>& hash){
-        if(poe<pos || ioe<ios)return NULL;
-
-        int data=po[pos];
-        TreeNode* root = new TreeNode(data);     
-
-        int posi=hash[data];
-        int ls=posi-ios;
-
-        root->left = bt(po,pos+1,pos+ls,io,ios,posi-1,hash);
-        root->right = bt(po,pos+ls+1,poe, io,posi+1,ioe,hash);
-
+    map<int,int> mp;
+    TreeNode* build (vector<int>& preorder, vector<int>& inorder, int preStart, int preEnd, int inStart, int inEnd){
+        if(preEnd<preStart || inEnd<inStart)return NULL;
+        if(preEnd==preStart){
+            TreeNode* root= new TreeNode(preorder[preEnd]);
+            return root;
+        }
+        TreeNode* root = new TreeNode(preorder[preStart]);
+        int pos=mp[preorder[preStart]];
+        int leftElements=pos-inStart;
+        int rightElements = inEnd-pos;
+        root->left= build(preorder,inorder,preStart+1,preStart+leftElements,inStart,pos-1);
+        root->right=build(preorder,inorder,preStart+leftElements+1,preEnd,pos+1,inEnd);
         return root;
     }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        map<int,int> hash;
-        int n= inorder.size();
+        int n=preorder.size();
         for(int i=0;i<n;i++){
-            hash[inorder[i]]=i;
+            mp[inorder[i]]=i;
         }
-        return bt(preorder,0,n-1,inorder,0,n-1,hash);
+        return build(preorder,inorder,0,n-1,0,n-1);
     }
 };
