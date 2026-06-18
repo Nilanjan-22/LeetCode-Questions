@@ -15,21 +15,21 @@ public:
         return true;
     }
 
-    void fillingBoard(int it, vector<pair<int,int>>& toBeFilled, vector<vector<char>> & board, vector<vector<char>>& ans){
+    bool fillingBoard(int it, vector<pair<int,int>>& toBeFilled, vector<vector<char>> & board, vector<vector<char>>& ans){
         if(it>=toBeFilled.size()){
             ans=board;
-            return;
+            return true;
         }
         int i=toBeFilled[it].first;
         int j=toBeFilled[it].second;
         for(char ch='1';ch<='9';ch++){
             if(canBePlaced(ch,i,j,board)){
                 board[i][j]=ch;
-                fillingBoard(it+1,toBeFilled, board, ans);
+                if(fillingBoard(it+1,toBeFilled, board, ans)) return true;
                 board[i][j]='.';
             }
         }
-        return;
+        return false;
     }
     void solveSudoku(vector<vector<char>>& board) {
         vector<pair<int,int>> toBeFilled;
@@ -40,6 +40,5 @@ public:
         }
         vector<vector<char>> ans;
         fillingBoard(0,toBeFilled,board,ans);
-        board=ans;
     }
 };
