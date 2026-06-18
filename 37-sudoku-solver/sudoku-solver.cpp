@@ -15,9 +15,8 @@ public:
         return true;
     }
 
-    bool fillingBoard(int it, vector<pair<int,int>>& toBeFilled, vector<vector<char>> & board, vector<vector<char>>& ans){
+    bool fillingBoard(int it, vector<pair<int,int>>& toBeFilled, vector<vector<char>> & board){
         if(it>=toBeFilled.size()){
-            ans=board;
             return true;
         }
         int i=toBeFilled[it].first;
@@ -25,7 +24,7 @@ public:
         for(char ch='1';ch<='9';ch++){
             if(canBePlaced(ch,i,j,board)){
                 board[i][j]=ch;
-                if(fillingBoard(it+1,toBeFilled, board, ans)) return true;
+                if(fillingBoard(it+1,toBeFilled, board)) return true;
                 board[i][j]='.';
             }
         }
@@ -38,7 +37,6 @@ public:
                 if(board[i][j]=='.')toBeFilled.push_back({i,j});
             }
         }
-        vector<vector<char>> ans;
-        fillingBoard(0,toBeFilled,board,ans);
+        fillingBoard(0,toBeFilled,board);
     }
 };
