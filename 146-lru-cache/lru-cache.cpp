@@ -15,7 +15,7 @@ class Listnode {
 class LRUCache {
 public:
     int capacity;
-    map<int,Listnode*> addressMap;
+    unordered_map<int,Listnode*> addressMap;
     Listnode* lastNode=NULL;
     Listnode* firstNode=NULL;
     LRUCache(int capacity) {
