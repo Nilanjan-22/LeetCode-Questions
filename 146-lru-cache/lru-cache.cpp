@@ -1,72 +1,79 @@
+class Listnode {
+    public: 
+    int val;
+    int key;
+    Listnode* next;
+    Listnode* prev;
+
+    Listnode(int val,int key){
+        this->val=val;
+        this->key=key;
+        next=NULL;
+        prev=NULL;
+    }
+};
 class LRUCache {
 public:
-    class Node {
-    public:
-        int val;
-        int key;
-        Node* prev;
-        Node* next;
-
-        Node(int key, int val){
-            this->val=val;
-            this->key=key;
-            this->prev=NULL;
-            this->next=NULL;
-        }
-    };
     int capacity;
-    unordered_map<int,Node*> mp; //key,node*
-    Node* head= new Node(-1,-1);
-    Node* tail = new Node(-1,-1);
-    void Delete(Node* nd){
-        Node* bck=nd->prev;
-        Node* frnt=nd->next;
-        nd->prev=NULL;
-        nd->next=NULL;
-        frnt->prev=bck;
-        bck->next=frnt;
-    }
-
-    void Insert(Node* lru){
-        Node* frnt=head->next;
-        lru->next=frnt;
-        lru->prev=head;
-        head->next=lru;
-        frnt->prev=lru;
-    }
+    map<int,Listnode*> addressMap;
+    Listnode* lastNode=NULL;
+    Listnode* firstNode=NULL;
     LRUCache(int capacity) {
         this->capacity=capacity;
-        tail->prev=head;
-        head->next=tail;
     }
-    
-    int get(int key) {
+    void moveNode(Listnode* & curNode){
+        Listnode* prevNode=curNode->prev;
+        Listnode* nextNode = curNode->next;
+        if(prevNode!=NULL)prevNode->next=nextNode;
+        else{
+            firstNode=nextNode;
+        }
+        nextNode->prev=prevNode;
+        lastNode->next=curNode;
+        curNode->prev=lastNode;
+        curNode->next=NULL;
+        lastNode=curNode;
+    }
+    void addNode(int val, int key){
+        Listnode* newNode = new Listnode(val,key);
+        if (lastNode!=NULL)lastNode->next=newNode;
+        else{
+            firstNode=newNode;
+        }
+        newNode->prev=lastNode;
+        lastNode=newNode;
+        addressMap[key]=newNode;
+    }
 
-        if(mp.find(key)!=mp.end()){
-            Node* lru= mp[key];
-            Delete(lru);
-            Insert(lru);
-            return mp[key]->val;
+    void deleteNode(){
+        int key=firstNode->key;
+        addressMap.erase(key);
+        Listnode* nextNode=firstNode->next;
+        nextNode->prev=NULL;
+        firstNode=nextNode;
+    }
+    int get(int key) {
+        if(addressMap.find(key)==addressMap.end())return -1;
+        Listnode* curNode=addressMap[key];
+        if(lastNode!=curNode){
+            moveNode(curNode);
         }
-        else return -1;
+        return curNode->val;
+        
     }
     
-    void put(int k, int v) {
-        Node* lru=new Node(k,v);
-        if(mp.size()==capacity && mp.find(k)==mp.end()){
-            lru=tail->prev;
-            mp.erase(lru->key);
-            Delete(lru);
-            lru->key=k;
-            lru->val=v;
+    void put(int key, int value) {
+        if(addressMap.find(key)!=addressMap.end()){
+            Listnode* curNode=addressMap[key];
+            curNode->val=value;
+            if(curNode!=lastNode)moveNode(curNode);
+            return;
         }
-        else if(mp.find(k)!=mp.end()){
-            lru=mp[k];
-            Delete(lru);
-            lru->val=v;
+        else{
+            addNode(value,key);
+            if(addressMap.size()>capacity)deleteNode();
         }
-        Insert(lru);
-        mp[k]=lru;
+        return;
     }
 };
 
