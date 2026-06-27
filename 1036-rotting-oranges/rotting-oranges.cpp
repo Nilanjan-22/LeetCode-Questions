@@ -1,60 +1,33 @@
 class Solution {
 public:
-    int n,m,cnt=0;
-    queue<vector<int>> q;
-    vector<vector<int>> g;
-    int bfs(){
-        int ans=0,c=0;
-        while(!q.empty()){
-            int i=q.front()[0];
-            int j=q.front()[1];
-            int d=q.front()[2];
-
-            ans=max(d,ans);
-            q.pop();
-            //up
-            if(i-1>-1 && g[i-1][j]==1){
-                c++;
-                g[i-1][j]=2;
-                q.push({i-1,j,d+1});
-            }
-            //down
-            if(i+1<n && g[i+1][j]==1){
-                c++;
-                g[i+1][j]=2;
-                q.push({i+1,j,d+1});
-            }
-
-            //left
-            if(j-1>-1 && g[i][j-1]==1){
-                c++;
-                g[i][j-1]=2;
-                q.push({i,j-1,d+1});
-            }
-            //right
-            if(j+1<m && g[i][j+1]==1){
-                c++;
-                g[i][j+1]=2;
-                q.push({i,j+1,d+1});
-            }
-            
-        }
-
-        if(c==cnt)return ans;
-        else return -1;
-    }
     int orangesRotting(vector<vector<int>>& grid) {
-        n=grid.size();
-        m=grid[0].size();
-        g=grid;
+        int n=grid.size(),m=grid[0].size();
+        vector<vector<int>> directions = {{-1,0},{1,0},{0,1},{0,-1}};
+        int freshOranges=0;
+        queue<vector<int>> q;
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(g[i][j]==2)q.push({i,j,0});
-                else if(g[i][j]==1)cnt++;
+                if(grid[i][j]==2)q.push({i,j,0});
+                if(grid[i][j]==1)freshOranges++;
             }
         }
+        int maxTime=0;
+        while(!q.empty()){
+            int i=q.front()[0],j=q.front()[1],time=q.front()[2];
+            maxTime=max(time,maxTime);
+            q.pop();
 
-        return bfs();
+            for(auto dir:directions){
+                int ni=i+dir[0],nj=j+dir[1];
 
+                if(ni>=0 && ni<n && nj>=0 && nj<m && grid[ni][nj]==1){
+                    freshOranges--;
+                    grid[ni][nj]=2;
+                    q.push({ni,nj,time+1});
+                }
+            }
+        }
+        if(freshOranges>0)return -1;
+        return maxTime;
     }
 };
