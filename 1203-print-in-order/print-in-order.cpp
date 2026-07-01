@@ -16,7 +16,7 @@ public:
         
         // printSecond() outputs "second". Do not change or remove this line.
         while(turn!=1){
-
+            this_thread::yield();
         }
         printSecond();
         turn =2;
@@ -26,7 +26,7 @@ public:
         
         // printThird() outputs "third". Do not change or remove this line.
         while(turn!=2){
-
+            this_thread::yield();
         }
         printThird();
         turn=0;
