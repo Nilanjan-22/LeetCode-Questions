@@ -1,18 +1,17 @@
 class Solution {
 public:
+    int longestPal(int i, int j, string& s, vector<vector<int>>& dp){
+        if(i>=s.size() || j<0)return 0;
+        if(dp[i][j]!=-1)return dp[i][j];
+
+        if(s[i]==s[j]){
+            return dp[i][j]=1+longestPal(i+1,j-1,s,dp);
+        }
+        return dp[i][j]=max(longestPal(i+1,j,s,dp),longestPal(i,j-1,s,dp));
+    }
     int minInsertions(string s) {
         int n=s.size();
-        string s2=s;
-        reverse(s2.begin(),s2.end());
-
-        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
-
-        for(int i=1;i<=n;i++){
-            for(int j=1;j<=n;j++){
-                if(s[i-1]==s2[j-1])dp[i][j]=1+dp[i-1][j-1];
-                else dp[i][j]=max(dp[i-1][j], dp[i][j-1]);
-            }
-        }
-        return n-dp[n][n];
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+        return n-longestPal(0,n-1,s,dp);
     }
 };
