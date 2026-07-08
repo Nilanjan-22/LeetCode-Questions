@@ -11,28 +11,25 @@
  */
 class Solution {
 public:
-    TreeNode* bt(vector<int>& io, int ios, int ioe, vector<int>& po, int pos, int poe, map<int,int>& hash){
-        if(poe<pos || ioe<ios)return NULL;
+    map<int,int> mp;
+    TreeNode* build(vector<int>& inorder, vector<int>& postorder,int stp, int enp, int sti, int eni){
+        if(eni<sti)return NULL;
 
-        int data= po[poe];
-        TreeNode* root = new TreeNode(data);
+        TreeNode* node=new TreeNode(postorder[stp]);
+        int ind=mp[postorder[stp]];
+        int ll=ind-sti;
+        int rl=eni-ind;
 
-        int posi=hash[data];
-        int rs=ioe-posi;
-
-        root->right= bt(io,posi+1,ioe,po,poe-rs,poe-1,hash);
-        root->left = bt(io,ios,posi-1,po,pos,poe-rs-1,hash);
-
-        return root;
+        node->right = build(inorder, postorder, stp+1,stp+rl,ind+1,eni);
+        node->left= build(inorder, postorder,stp+rl+1,enp,sti,ind-1);
+        return node;
     }
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        map<int,int> hash;
         int n=inorder.size();
-
+        reverse(postorder.begin(), postorder.end());
         for(int i=0;i<n;i++){
-            hash[inorder[i]]=i;
+            mp[inorder[i]]=i;
         }
-
-        return bt(inorder,0,n-1,postorder,0,n-1,hash);
+        return build(inorder,postorder,0,n-1,0,n-1);
     }
 };
