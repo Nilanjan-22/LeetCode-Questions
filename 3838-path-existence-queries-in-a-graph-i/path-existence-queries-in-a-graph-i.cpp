@@ -41,11 +41,20 @@ public:
         }
         sort(graphNodes.begin(),graphNodes.end());
         DSU dsu = DSU(n);
-        for(int i=0;i<n-1;i++){
-            if(graphNodes[i+1].first-graphNodes[i].first<=maxDiff){
-                int n1=graphNodes[i+1].second, n2=graphNodes[i].second;
-                dsu.join(n1,n2);
+        for(int i=0;i<n;i++){
+            bool finish=false;
+            for(int j=i+1;j<n;j++){
+                if(graphNodes[j].first-graphNodes[i].first<=maxDiff){
+                    int n1=graphNodes[i].second, n2=graphNodes[j].second;
+                    dsu.join(n1,n2);
+                    if(j==n-1)finish=true;
+                }
+                else{
+                    i=max(i,j-2);
+                    break;
+                }
             }
+            if(finish)break;
         }
 
         vector<bool> ans;
