@@ -11,18 +11,13 @@
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        //just check where it is splitting, if there is no point of split that is the lca
-        //else the point of splitting is the lca
+        if(root==q || root==p || root==NULL)return root;
 
-        TreeNode* cur=root;
-        int minV=min(p->val,q->val);
-        int maxV=max(p->val,q->val);
-        while(cur){
-            if(minV<cur->val && maxV>cur->val)return cur;
-            else if(minV>cur->val)cur=cur->right;
-            else if(maxV<cur->val)cur=cur->left;
-            else return cur;
-        }
-        return cur;
+        TreeNode* left = lowestCommonAncestor(root->left,p,q);
+        TreeNode* right = lowestCommonAncestor(root->right,p,q);
+
+        if(left==NULL)return right;
+        if(right==NULL)return left;
+        return root;
     }
 };
