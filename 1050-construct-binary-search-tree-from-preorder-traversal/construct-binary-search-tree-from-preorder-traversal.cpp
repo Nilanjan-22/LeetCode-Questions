@@ -11,18 +11,18 @@
  */
 class Solution {
 public:
-    TreeNode* build(vector<int>& po, int& i, int ub){
-        if(i==po.size() || ub<=po[i])return NULL;
-        TreeNode* root= new TreeNode(po[i]);
-        i++;
-        root->left=build(po,i,root->val);
-        root->right=build(po,i,ub);
+    TreeNode* build(vector<int>& preorder, int& ind, int upperBound){
+        if(ind==preorder.size() || preorder[ind]>upperBound)return NULL;
+
+        TreeNode* root = new TreeNode(preorder[ind++]);
+        root->left= build(preorder,ind,root->val);
+        root->right=build(preorder,ind,upperBound);
 
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        int i=0;
-        int ub=INT_MAX;
-        return build(preorder,i,ub);
+        int upperBound=INT_MAX;
+        int ind=0;
+        return build(preorder,ind,upperBound);
     }
 };
