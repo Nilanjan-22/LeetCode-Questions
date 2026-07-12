@@ -11,26 +11,33 @@
  */
 class Solution {
 public:
-
     int kthSmallest(TreeNode* root, int k) {
-        int ind=0;
-        stack<TreeNode*> st;
         TreeNode* cur=root;
-        set<TreeNode*> vis;
-        while(ind<k){
-            while(cur->left!=NULL && vis.find(cur)==vis.end()){
-                st.push(cur);
-                vis.insert(cur);
-                cur=cur->left;
+        int ind=0;
+        int results=-1;
+        while(cur){
+            if(cur->left==NULL){
+                ind++;
+                if(ind==k)results= cur->val;
+                cur=cur->right;
             }
-            ind++;
-            if(ind==k)return cur->val;
-            if(cur->right!=NULL)cur=cur->right;
             else{
-                cur=st.top();
-                st.pop();
+                TreeNode* next=cur->left;
+                while(next->right!=NULL && next->right!=cur){
+                    next=next->right;
+                }
+                if(next->right==NULL){
+                    next->right=cur;
+                    cur=cur->left;
+                }
+                else{
+                    next->right=NULL;
+                    ind++;
+                    if(ind==k)results= cur->val;
+                    cur=cur->right;
+                }
             }
         }
-        return -1;
+        return results;
     }
 };
