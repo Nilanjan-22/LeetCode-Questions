@@ -11,23 +11,20 @@
  */
 class Solution {
 public:
-    void io(vector<int>& inorder, TreeNode* root){
-        if(!root)return;
-        io(inorder,root->left);
+    void inorderTraversal(TreeNode* root, vector<int>& inorder){
+        if(root->left!=NULL)inorderTraversal(root->left, inorder);
         inorder.push_back(root->val);
-        io(inorder,root->right);
+        if(root->right!=NULL)inorderTraversal(root->right, inorder);
     }
     bool findTarget(TreeNode* root, int k) {
         vector<int> inorder;
-        io(inorder,root);
-
-        int l=0,h=inorder.size()-1;
-        while(l<h){
-            if(inorder[l]+inorder[h]==k)return true;
-            else if(inorder[l]+inorder[h]<k){
-                l++;
-            }
-            else h--;
+        inorderTraversal(root,inorder);
+        int n=inorder.size();
+        int i=0,j=n-1;
+        while(i<j){
+            if(inorder[i]+inorder[j] == k)return true;
+            if(inorder[i]+inorder[j] < k)i++;
+            else j--;
         }
         return false;
     }
