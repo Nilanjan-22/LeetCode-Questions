@@ -12,63 +12,59 @@ public:
 
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        //just use basic level order traversal
-
-        string s="";
-        if(!root)return s;
+        string serialized;
         queue<TreeNode*> q;
         q.push(root);
-
         while(!q.empty()){
-            TreeNode* n=q.front();
+            TreeNode* node = q.front();
             q.pop();
-            if(n==NULL)s.append("n,");
-            else{
-                s.append(to_string(n->val)+',');
-                q.push(n->left);
-                q.push(n->right);
+            if(node==NULL){
+                serialized+="null";
+                serialized.push_back(',');
+                continue;
             }
+            else {
+                serialized+=to_string(node->val);
+                serialized.push_back(',');
+            }
+            q.push(node->left);
+            q.push(node->right);
         }
-    
-        cout<<s;
-        return s;
+        serialized.pop_back();
+        return serialized;
     }
 
+    // Decodes your encoded data to tree.
     TreeNode* deserialize(string data) {
-        //for every number in the strings take the next two
-        int si=data.size();
-        if(si==0)return NULL;
-    
-        stringstream s(data);
-        string str;
-        getline(s,str,',');
-
-        TreeNode* root = new TreeNode(stoi(str));
+        stringstream ss(data);
+        string s;
+        char delimiter = ',';
+        getline(ss,s,delimiter);
+        
+        TreeNode* root= NULL;
+        if(s=="null")return root;
+        else root = new TreeNode (stoi(s));
         queue<TreeNode*> q;
         q.push(root);
-        
         while(!q.empty()){
-            TreeNode* n=q.front();
+            TreeNode* node = q.front();
             q.pop();
-            getline(s,str,',');
-            if(str=="n")n->left=NULL;
-            else{
-                n->left= new TreeNode(stoi(str));
-                q.push(n->left);
+            getline(ss,s,delimiter);
+            if(s!="null"){
+                node->left = new TreeNode (stoi(s));
+                q.push(node->left);
             }
-
-            getline(s,str,',');
-            if(str=="n")n->right=NULL;
-            else{
-                n->right=new TreeNode(stoi(str));
-                q.push(n->right);
+            getline(ss,s,delimiter);
+            if(s!="null"){
+                node->right = new TreeNode (stoi(s));
+                q.push(node->right);
             }
         }
+        
         return root;
 
     }
 };
-
 
 // Your Codec object will be instantiated and called as such:
 // Codec ser, deser;
