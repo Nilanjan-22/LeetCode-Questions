@@ -1,22 +1,20 @@
 class Solution {
 public:
     long long gcdSum(vector<int>& nums) {
-        int n=nums.size();
-        vector<long long> prefgcd(n);
-        int maxi=-1;
-        for(int i=0;i<n;i++){
+        int maxi=-1, n=nums.size();
+        vector<int> pref(n);
+        for(int i=0;i<nums.size();i++){
             maxi=max(maxi,nums[i]);
-            prefgcd[i] = gcd(maxi,nums[i]);
+            pref[i]=gcd(nums[i],maxi);
         }
-        sort(prefgcd.begin(),prefgcd.end());
-        long long sum=0;
-        int lo=0,hi=n-1;
-        while(lo<hi){
-            sum+=gcd(prefgcd[lo],prefgcd[hi]);
-            lo++;
-            hi--;
+        sort(pref.begin(),pref.end());
+        int i=0, j=n-1;
+        long long totalSum=0;
+        while(i<j){
+            totalSum+=gcd(pref[i],pref[j]);
+            i++;
+            j--;
         }
-
-        return sum;
+        return totalSum;
     }
 };
