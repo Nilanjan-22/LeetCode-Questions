@@ -1,31 +1,49 @@
 class Solution {
 public:
-    vector<vector<int>> dir = {{-1,0},{0,-1},{1,0},{0,1}};
-    int cols,rows;
-    bool dfs(int i,int j, int pi, int pj, vector<vector<char>>& grid , vector<vector<int>>& visited){
-        visited[i][j]=1;
-        bool reached=false;
-        for(auto it: dir){
-            int ni=i+it[0], nj=j+it[1];
-            if(nj>=0 && nj<cols && ni>=0 && ni<rows && (nj!=pj || ni!=pi) && grid[i][j]==grid[ni][nj]){
-                if(visited[ni][nj]==1)reached=true;
-                else reached=reached| dfs(ni,nj,i,j,grid,visited);
+    vector<pair<int,int>> dir={{0,1},{0,-1},{1,0},{-1,0}};
+    bool findCycleUsingBFS(int i, int j, vector<vector<char>>& grid, set<pair<int,int>>& vis ){
+        char ch = grid[i][j];
+        vis.insert({i,j});
+
+        set<pair<int,int>> path;
+        queue<pair<int,int>> q;
+        q.push({i,j});
+        map<pair<int,int>,pair<int,int>> par;
+        par[{i,j}]={-1,-1};
+        while(!q.empty()){
+            pair<int,int> node = q.front();
+            q.pop();
+            int i1=node.first, j1=node.second;
+
+            for(auto it: dir){
+                int ni=i1+it.first , nj = j1+it.second;
+                pair<int,int> curNode = {ni,nj};
+                if(ni>=0 && ni<grid.size() && nj>=0 && nj<grid[0].size() && grid[ni][nj]==ch && curNode!=par[{i1,j1}]){
+                    if(vis.find({ni,nj})!=vis.end())return true;
+                    q.push({ni,nj});
+                    vis.insert({ni,nj});
+                    par[{ni,nj}]={i1,j1};
+                }
             }
         }
-        return reached;
+        return false;
+    }   
+    bool findCycleUsingDFS(){
+        return false;
     }
     bool containsCycle(vector<vector<char>>& grid) {
-        cols=grid[0].size(),rows=grid.size();
+        int n=grid.size(),m=grid[0].size();
+        set<pair<int,int>> vis;
 
-        vector<vector<int>> visited(rows,vector<int>(cols,0));
-
-        for(int i=0;i<rows;i++){
-            for(int j=0;j<cols;j++){
-                if(!visited[i][j]){
-                    if(dfs(i,j,-1,-1,grid,visited)){
+        bool cycleFound=false;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(vis.find({i,j})==vis.end()){
+                    cycleFound|=findCycleUsingBFS(i,j,grid,vis);
+                    if(cycleFound==true){
                         return true;
                     }
-                }
+                }   
             }
         }
         return false;
