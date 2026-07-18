@@ -1,35 +1,29 @@
 class Solution {
 public:
-    vector<vector<int>> dir ={{0,1}, {0,-1} ,{-1,0}, {1,0}};
-    void dfs(int i, int j, vector<vector<char>>& grid, vector<vector<bool>>& visited){
-        int n=grid.size(), m=grid[0].size();
-        if(visited[i][j])return;
-        visited[i][j]=true;
+    vector<pair<int,int>> dir = {{0,1},{1,0},{0,-1},{-1,0}};
+    void dfs(int i,int j, vector<vector<char>>& grid, vector<vector<int>>& vis){
+        vis[i][j]=1;
 
-        for(vector<int>& v:dir){
-            int i1=i+v[0], j1=j+v[1];
-
-            if(i1>n-1 || j1>m-1 || i1<0 || j1<0)continue;
-            else if(grid[i1][j1]=='0')continue;
-            else{
-                dfs(i1,j1,grid,visited);
+        for(auto it: dir){
+            int ni = i+it.first, nj=j+it.second;
+            if(ni>=0 && nj>=0 && ni<grid.size() && nj<grid[0].size() && vis[ni][nj]==0 && grid[ni][nj]=='1'){
+                dfs(ni,nj,grid,vis);
             }
         }
     }
     int numIslands(vector<vector<char>>& grid) {
-        int n=grid.size(), m=grid[0].size();
-        vector<vector<bool>> visited(n, vector<bool>(m,false));
-
         int cnt=0;
+        int n=grid.size(),m=grid[0].size();
+        vector<vector<int>> vis(n,vector<int>(m,0));
+
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(grid[i][j]=='1' && visited[i][j]==false){
+                if(vis[i][j]==0 && grid[i][j]=='1'){
+                    dfs(i,j,grid,vis);
                     cnt++;
-                    dfs(i,j,grid,visited);
                 }
             }
         }
-
         return cnt;
     }
 };
