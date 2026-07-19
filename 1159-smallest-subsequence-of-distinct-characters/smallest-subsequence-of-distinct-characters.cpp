@@ -1,8 +1,8 @@
 class Solution {
 public:
     string smallestSubsequence(string s) {
-        set<char> charSet;
-        map<char,int> lastIdx;
+        unordered_set<char> charSet;
+        unordered_map<char,int> lastIdx;
         for(int i=0;i<s.size();i++){
             lastIdx[s[i]]=i;
         }
