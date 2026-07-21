@@ -40,7 +40,7 @@ public:
         }
 
         for(int i=0;i<n;i++){
-            if(dist[i]>=disappear[i])dist[i]=-1;
+            if(dist[i]==INT_MAX)dist[i]=-1;
         }
 
         return dist;
