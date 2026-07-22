@@ -12,9 +12,22 @@ public:
 
         return dp[cur][prev]=maxLen;
     }
+
+    int LISUsingBS(vector<int>& nums){
+        vector<int> list;
+        for(int i=0;i<nums.size();i++){
+            if(list.size()==0 || list.back()<nums[i]){
+                list.push_back(nums[i]);
+            }
+            else{
+                auto it = lower_bound(list.begin(),list.end(),nums[i]);
+                int ind = it-list.begin();
+                list[ind]=nums[i];
+            }
+        }
+        return list.size();
+    }
     int lengthOfLIS(vector<int>& nums) {
-        int n=nums.size();
-        vector<vector<int>> dp(n,vector<int>(n+1,-1));
-        return LIS(0,0,nums,dp);
+        return LISUsingBS(nums);
     }
 };
