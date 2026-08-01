@@ -1,19 +1,16 @@
 class Solution {
 public:
-    bool predict(int turn, int score1, int score2, int i, int j, vector<int>& nums){
-        if(j<i)return score2<=score1;
+    int p1Score (int i, int j, vector<int>& nums, vector<vector<int>>& dp){
+        if(i>j)return 0;
+        if(dp[i][j]!=INT_MIN)return dp[i][j];
 
-        if(turn == 0){
-            return predict(1,score1+nums[i],score2,i+1,j,nums) || predict(1,score1+nums[j],score2,i,j-1,nums);
-        }
-        else{
-            return predict(0,score1,score2+nums[i],i+1,j,nums) && predict(0,score1,score2+nums[j],i,j-1,nums);
-        }
+        int takeFirst = nums[i] - p1Score(i+1,j,nums,dp);
+        int takeLast = nums[j] - p1Score(i,j-1,nums,dp);
+        return max(takeFirst, takeLast);
     }
     bool predictTheWinner(vector<int>& nums) {
-        
         int n=nums.size();
-        return predict(0,0,0,0,n-1,nums);
-
+        vector<vector<int>> dp(n,vector<int>(n,INT_MIN));
+        return p1Score(0,n-1,nums,dp)>=0;
     }
 };
