@@ -6,7 +6,7 @@ public:
 
         int takeFirst = nums[i] - p1Score(i+1,j,nums,dp);
         int takeLast = nums[j] - p1Score(i,j-1,nums,dp);
-        return max(takeFirst, takeLast);
+        return dp[i][j] = max(takeFirst, takeLast);
     }
     bool predictTheWinner(vector<int>& nums) {
         int n=nums.size();
