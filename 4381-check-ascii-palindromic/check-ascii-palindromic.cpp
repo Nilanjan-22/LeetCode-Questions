@@ -15,7 +15,6 @@ public:
             reverse(temp.begin(),temp.end());
             binaryS+=temp;
         }
-        cout<<binaryS;
         int i=0,j=binaryS.size()-1;
         while(i<j){
             if(binaryS[i++]!=binaryS[j--])return false;
