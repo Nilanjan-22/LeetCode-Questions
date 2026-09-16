@@ -6,7 +6,7 @@ public:
         if(k==0)return 1;
         if(dp[cur][k]!=-1)return dp[cur][k];
         long long possibilities=solve(cur+1,k,n,dp);
-        for(int i=cur+1;i<=n-k;i++){
+        for(int i=cur+1;i<=n;i++){
             possibilities += solve(i,k-1,n,dp);
             possibilities%=mod;
         }
