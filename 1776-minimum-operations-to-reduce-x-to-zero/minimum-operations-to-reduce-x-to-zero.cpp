@@ -2,7 +2,7 @@ class Solution {
 public:
     int minOperations(vector<int>& nums, int x) {
         int n=nums.size();
-        map<int,int> prefSum, suffSum;
+        unordered_map<int,int> prefSum, suffSum;
         prefSum[0]=0;
         suffSum[0]=0;
         int s1=0,s2=0;
