@@ -1,32 +1,24 @@
 class Solution {
 public:
     vector<int> countTasks(vector<int>& tasks, vector<int>& shifts) {
-        int n=tasks.size(), m=shifts.size();
-        map<long long,int> prefixTime;
-        long long sum=0;
-        for(int i=0; i<n; i++){
-            sum+=(long long)tasks[i];
-            prefixTime[sum]=i+1;
+        int n=shifts.size(), m=tasks.size();
+        vector<int> unfinished(n);
+        vector<long long> taskSum(m,0);
+
+        taskSum[0]=tasks[0];
+        for(int i=1;i<m;i++){
+            taskSum[i]=(long long)tasks[i]+taskSum[i-1];
         }
 
-        vector<int> unfinishedTask(m);
-
-        long long overallTime=0;
-        for(int i=0;i<m;i++){
-            overallTime+=(long long)shifts[i];
-            if(overallTime>=sum){
-                unfinishedTask[i]=0;
-                overallTime=0;
-                continue;
-            }
-            auto finishedTasks = prefixTime.upper_bound(overallTime);
-            if(finishedTasks == prefixTime.begin()){
-                unfinishedTask[i]=n;
-                continue;
-            }
-            finishedTasks--;
-            unfinishedTask[i] = n-finishedTasks->second;
+        long long alreadyFinished=0;
+        for(int i=0;i<n;i++){
+            long long sDur = shifts[i];
+            int finishedTasks = upper_bound(taskSum.begin(),taskSum.end(), sDur+alreadyFinished) - taskSum.begin();
+            alreadyFinished = sDur+alreadyFinished;
+            if(alreadyFinished>=taskSum[m-1])alreadyFinished=0;
+            unfinished[i]=m-finishedTasks;
+            
         }
-        return unfinishedTask;
+        return unfinished;
     }
 };
