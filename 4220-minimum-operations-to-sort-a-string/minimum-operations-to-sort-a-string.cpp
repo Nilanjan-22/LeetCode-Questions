@@ -1,23 +1,20 @@
 class Solution {
 public:
     int minOperations(string s) {
-        int n=s.size();
-
-        if(s.size()==2 && s[0]>s[1])return -1;
-        string c=s;
-        sort(c.begin(),c.end());
-        if(c==s)return 0;
-
-        int small=0,big=0;
-        map<char,int> mp;
-        for(int i=0;i<s.size();i++){
-            if(s[i]<s[small])small=i;
-            if(s[i]>=s[big])big=i;
-            mp[s[i]]++;
+        char largest='a',smallest='z';
+        map<char,int> uniques;
+        for(auto ch: s){
+            if(largest<ch)largest=ch;
+            if(smallest>ch)smallest=ch;
+            uniques[ch]++;
         }
-        if(s[small]==s[0] || s[big]==s[n-1])return 1;
-        else if(s[big]==s[0] && s[small]==s[n-1] && mp[s[big]]==1 && mp[s[small]]==1)return 3;
-        else return 2;
         
+        string sorted=s;
+        sort(sorted.begin(),sorted.end());
+        if(sorted==s)return 0;
+        else if(s.size()==2)return -1;
+        else if(s[0]==smallest || s[s.size()-1]==largest)return 1;
+        else if(s[0]==largest && s[s.size()-1]==smallest && uniques.size()>2 && uniques[smallest]==1 && uniques[largest]==1)return 3;
+        else return 2;
     }
 };
