@@ -1,24 +1,15 @@
 class Solution {
 public:
     long long minimumCost(int cost1, int cost2, int costBoth, int need1, int need2) {
-
-        long long ans=0;
-        if(cost1+cost2>=costBoth){
-            ans+=min((long long)need1,(long long)need2)*(long long)costBoth;
-            if(need1>need2){
-                if(cost1>costBoth)ans+=(long long)(need1-need2)*(long long)costBoth;
-                else ans+=(long long)(need1-need2)*(long long)cost1;
-            }
-            else{
-                if(cost2>costBoth)ans+=(long long)(need2-need1)*(long long)costBoth;
-                else ans+=(long long)(need2-need1)*(long long)cost2;
-            }
+        long long buyBoth = (long long)costBoth*(long long)max(need1,need2);
+        long long buyDiff = (long long)cost1*(long long)need1 + (long long)cost2*(long long)need2;
+        long long hybrid = (long long)costBoth *(long long)min(need1,need2);
+        if(need1>need2){
+            hybrid+=(long long)cost1*(long long)(need1-need2);
         }
         else{
-            ans+=(long long)cost1*(long long)need1;
-            ans+=(long long)cost2*(long long)need2;
+            hybrid +=(long long)cost2*(long long)(need2-need1);
         }
-
-        return ans;
+        return min(buyBoth,min(buyDiff,hybrid));
     }
 };
